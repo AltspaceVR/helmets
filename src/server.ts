@@ -3,21 +3,17 @@
  * Licensed under the MIT License.
  */
 
-import { ConsoleLogger, WebHost } from '@microsoft/mixed-reality-extension-sdk';
+import { WebHost } from '@microsoft/mixed-reality-extension-sdk';
 import { resolve as resolvePath } from 'path';
 import ScoreBoard from './app';
 
-process.on('uncaughtException', (err) => console.log('uncaughtException', err));
-process.on('unhandledRejection', (reason) => console.log('unhandledRejection', reason));
+process.on('uncaughtException', err => console.log('uncaughtException', err));
+process.on('unhandledRejection', reason => console.log('unhandledRejection', reason));
 
-const logger = new ConsoleLogger();
-logger.disable('debug', 'success');
-
- // Start listening for connections, and serve static files
+// Start listening for connections, and serve static files
 const server = new WebHost({
-   baseDir: resolvePath(__dirname, '../public'),
-   baseUrl: "http://10.0.1.89:3901", // ignored on Heroku so it's ok to check in
-   logger
+    baseDir: resolvePath(__dirname, '../public'),
+    baseUrl: "http://10.0.1.89:3901", // ignored on Heroku so it's ok to check in
 });
 
 // Handle new application sessions
