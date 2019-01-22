@@ -19,7 +19,9 @@ import {
  */
 export default class HelloWorld {
     private text: Actor = null;
-    private cube: Actor = null;
+    private cubes: Actor[] = [null, null, null];
+    private scores: number[] = [0, 0, 0];
+    private defaultMessage = "Shootout! First to 10 baskets Wins";
 
     constructor(private context: Context, private baseUrl: string) {
         this.context.onStarted(() => this.started());
@@ -39,7 +41,7 @@ export default class HelloWorld {
                     position: { x: 0, y: 0.5, z: 0 }
                 },
                 text: {
-                    contents: "Tom's da Man!",
+                    contents: this.defaultMessage,
                     anchor: TextAnchorLocation.MiddleCenter,
                     color: { r: 30 / 255, g: 206 / 255, b: 213 / 255 },
                     height: 0.3
@@ -68,73 +70,97 @@ export default class HelloWorld {
         })
             .catch(reason => this.context.logger.log('error', `Failed to create spin animation: ${reason}`));
 
-        // Load a glTF model
-        const cubePromise = Actor.CreateFromGLTF(this.context, {
-            // at the given URL
-            resourceUrl: `${this.baseUrl}/altspace-cube.glb`,
-            // and spawn box colliders around the meshes.
-            colliderType: 'box',
-            // Also apply the following generic actor properties.
-            actor: {
-                name: 'Altspace Cube',
-                // Parent the glTF model to the text actor.
-                parentId: this.text.id,
-                transform: {
-                    position: { x: 0, y: -1, z: 0 },
-                    scale: { x: 0.4, y: 0.4, z: 0.4 }
+        for (let tileIndexX = 0; tileIndexX < 3; tileIndexX++) {
+            // Load a glTF model
+            const cubePromise = Actor.CreateFromGLTF(this.context, {
+                // at the given URL
+                resourceUrl: `${this.baseUrl}/altspace-cube.glb`,
+                // and spawn box colliders around the meshes.
+                colliderType: 'box',
+                // Also apply the following generic actor properties.
+                actor: {
+                    name: 'Altspace Cube',
+                    transform: {
+                        position: { x: (tileIndexX) - 1.0, y: 0.5, z: 1.0 },
+                        scale: { x: 0.4, y: 0.4, z: 0.4 }
+                    }
                 }
-            }
-        });
+            });
 
-        // Grab that early reference again.
-        this.cube = cubePromise.value;
+            // Grab that early reference again.
+            this.cubes[tileIndexX] = cubePromise.value;
 
-        // Create some animations on the cube.
-        this.cube.createAnimation({
-            animationName: 'GrowIn',
-            keyframes: this.growAnimationData,
-            events: []
-        })
-            .catch(reason => this.context.logger.log('error', `Failed to create grow animation: ${reason}`));
+            // // Create some animations on the cube.
+            // this.cube.createAnimation({
+            //     animationName: 'GrowIn',
+            //     keyframes: this.growAnimationData,
+            //     events: []
+            // })
+            //     .catch(reason => this.context.logger.log('error', `Failed to create grow animation: ${reason}`));
 
-        this.cube.createAnimation({
-            animationName: 'ShrinkOut',
-            keyframes: this.shrinkAnimationData,
-            events: []
-        })
-            .catch(reason => this.context.logger.log('error', `Failed to create shrink animation: ${reason}`));
+            // this.cube.createAnimation({
+            //     animationName: 'ShrinkOut',
+            //     keyframes: this.shrinkAnimationData,
+            //     events: []
+            // })
+            //     .catch(reason => this.context.logger.log('error', `Failed to create shrink animation: ${reason}`));
 
-        this.cube.createAnimation({
-            animationName: 'DoAFlip',
-            keyframes: this.generateSpinKeyframes(1.0, Vector3.Right()),
-            events: []
-        })
-            .catch(reason => this.context.logger.log('error', `Failed to create flip animation: ${reason}`));
+            this.cubes[tileIndexX].createAnimation({
+                animationName: 'DoAFlip',
+                keyframes: this.generateSpinKeyframes(1.0, Vector3.Right()),
+                events: []
+            })
+                .catch(reason => this.context.logger.log('error', `Failed to create flip animation: ${reason}`));
 
-        // Now that the text and its animation are all being set up, we can start playing
-        // the animation.
-        this.text.startAnimation('Spin');
+            // Now that the text and its animation are all being set up, we can start playing
+            // the animation.
+            //
+            // now 'Spin' means the game is over
+            // this.text.startAnimation('Spin');
 
-        // Set up cursor interaction. We add the input behavior ButtonBehavior to the cube.
-        // Button behaviors have two pairs of events: hover start/stop, and click start/stop.
-        const buttonBehavior = this.cube.setBehavior(ButtonBehavior);
+            // Set up cursor interaction. We add the input behavior ButtonBehavior to the cube.
+            // Button behaviors have two pairs of events: hover start/stop, and click start/stop.
+            const buttonBehavior = this.cubes[tileIndexX].setBehavior(ButtonBehavior);
 
-        // Trigger the grow/shrink animations on hover.
-        buttonBehavior.onHover('enter', (userId: string) => {
-            this.cube.startAnimation('GrowIn');
+            // Trigger the grow/shrink animations on hover.
+            // buttonBehavior.onHover('enter', (userId: string) => {
+            //     this.cube.startAnimation('GrowIn');
+            // }
+            // );
+            // buttonBehavior.onHover('exit', (userId: string) => {
+            //     this.cube.startAnimation('ShrinkOut');
+            // }
+            // );
+
+            // When clicked increment score
+            buttonBehavior.onHover('enter', (userId: string) => {
+                // first button is the reset button
+                if (tileIndexX === 0) {
+                    this.reset();
+                } else {
+                    const player = tileIndexX;
+                    this.scores[player] += 1;
+                    if (this.scores[player] >= 10) {
+                        // win condition met so spin
+                        this.text.startAnimation('Spin');
+                        // and update text
+                        this.text.text.contents = `Player ${player} Wins!!`;
+                    } else {
+                        this.updateScoreboard();
+                    }
+                }
+            });
         }
-        );
-        buttonBehavior.onHover('exit', (userId: string) => {
-            this.cube.startAnimation('ShrinkOut');
-        }
-        );
+    }
 
-        // When clicked, do a 360 sideways.
-        buttonBehavior.onClick('pressed', (userId: string) => {
-            this.cube.startAnimation('DoAFlip');
-        }
-        );
+    private updateScoreboard() {
+        this.text.text.contents = `${this.scores[1]} : ${this.scores[2]}`;
+    }
 
+    private reset() {
+        this.scores[1] = 0;
+        this.scores[2] = 0;
+        this.updateScoreboard();
     }
 
     /**
