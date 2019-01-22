@@ -19,9 +19,11 @@ import {
  */
 export default class HelloWorld {
     private text: Actor = null;
-    private cubes: Actor[] = [null, null, null];
-    private scores: number[] = [0, 0, 0];
+    private buttons: Actor[] = [null, null, null, null];
+    private scores: number[] = [0, 0, 0, 0];
     private defaultMessage = "Shootout! First to 10 baskets Wins";
+    private scoreThreshold = 10;
+    private gameOver = false;
 
     constructor(private context: Context, private baseUrl: string) {
         this.context.onStarted(() => this.started());
@@ -38,7 +40,7 @@ export default class HelloWorld {
             actor: {
                 name: 'Text',
                 transform: {
-                    position: { x: 0, y: 0.5, z: 0 }
+                    position: { x: 0, y: 1.0, z: 0 }
                 },
                 text: {
                     contents: this.defaultMessage,
@@ -53,156 +55,73 @@ export default class HelloWorld {
         // we can still get a reference to it by grabbing the `value` field from the forward promise.
         this.text = textPromise.value;
 
-        // Here we create an animation on our text actor. Animations have three mandatory arguments:
-        // a name, an array of keyframes, and an array of events.
-        this.text.createAnimation({
-            // The name is a unique identifier for this animation. We'll pass it to "startAnimation" later.
-            animationName: "Spin",
-            // Keyframes define the timeline for the animation: where the actor should be, and when.
-            // We're calling the generateSpinKeyframes function to produce a simple 20-second revolution.
-            keyframes: this.generateSpinKeyframes(20, Vector3.Up()),
-            // Events are points of interest during the animation. The animating actor will emit a given
-            // named event at the given timestamp with a given string value as an argument.
-            events: [],
+        this.createButton(0);
+        this.createButton(1);
+        this.createButton(2);
+        this.createButton(3);
 
-            // Optionally, we also repeat the animation infinitely.
-            wrapMode: AnimationWrapMode.Loop
-        })
-            .catch(reason => this.context.logger.log('error', `Failed to create spin animation: ${reason}`));
+        // Set up cursor interaction. We add the input behavior ButtonBehavior to the cube.
+        // Button behaviors have two pairs of events: hover start/stop, and click start/stop.
+        const resetButton = this.buttons[0].setBehavior(ButtonBehavior);
+        resetButton.onHover('enter', (userId: string) => {
+            this.scores = this.scores.map(x => 0);
+            this.gameOver = false;
+            this.updateScoreboard();
+        });
 
-        for (let tileIndexX = 0; tileIndexX < 3; tileIndexX++) {
-            // Load a glTF model
-            const cubePromise = Actor.CreateFromGLTF(this.context, {
-                // at the given URL
-                resourceUrl: `${this.baseUrl}/altspace-cube.glb`,
-                // and spawn box colliders around the meshes.
-                colliderType: 'box',
-                // Also apply the following generic actor properties.
-                actor: {
-                    name: 'Altspace Cube',
-                    transform: {
-                        position: { x: (tileIndexX) - 1.0, y: 0.5, z: 1.0 },
-                        scale: { x: 0.4, y: 0.4, z: 0.4 }
-                    }
+        const playerOneButton = this.buttons[1].setBehavior(ButtonBehavior);
+        playerOneButton.onHover('enter', (userId: string) => {
+            if (this.gameOver) return;
+            this.scores[1] = this.scores[1] + 1;
+            this.updateGame();
+        });
+
+        const playerTwoButton = this.buttons[2].setBehavior(ButtonBehavior);
+        playerTwoButton.onHover('enter', (userId: string) => {
+            if (this.gameOver) return;
+            this.scores[2] = this.scores[2] + 1;
+            this.updateGame();
+        });
+
+        const playerThreeButton = this.buttons[3].setBehavior(ButtonBehavior);
+        playerThreeButton.onHover('enter', (userId: string) => {
+            if (this.gameOver) return;
+            this.scores[3] = this.scores[3] + 1;
+            this.updateGame();
+        });
+    }
+
+    private createButton(i: number) {
+        this.buttons[i] = Actor.CreateFromGLTF(this.context, {
+            // at the given URL
+            resourceUrl: `${this.baseUrl}/altspace-cube.glb`,
+            // and spawn box colliders around the meshes.
+            colliderType: 'box',
+            // Also apply the following generic actor properties.
+            actor: {
+                name: 'Altspace Cube',
+                transform: {
+                    position: { x: i - 1.0, y: 0.2, z: 0.0 },
+                    scale: { x: 0.4, y: 0.4, z: 0.4 }
                 }
-            });
-
-            // Grab that early reference again.
-            this.cubes[tileIndexX] = cubePromise.value;
-
-            // // Create some animations on the cube.
-            // this.cube.createAnimation({
-            //     animationName: 'GrowIn',
-            //     keyframes: this.growAnimationData,
-            //     events: []
-            // })
-            //     .catch(reason => this.context.logger.log('error', `Failed to create grow animation: ${reason}`));
-
-            // this.cube.createAnimation({
-            //     animationName: 'ShrinkOut',
-            //     keyframes: this.shrinkAnimationData,
-            //     events: []
-            // })
-            //     .catch(reason => this.context.logger.log('error', `Failed to create shrink animation: ${reason}`));
-
-            this.cubes[tileIndexX].createAnimation({
-                animationName: 'DoAFlip',
-                keyframes: this.generateSpinKeyframes(1.0, Vector3.Right()),
-                events: []
-            })
-                .catch(reason => this.context.logger.log('error', `Failed to create flip animation: ${reason}`));
-
-            // Now that the text and its animation are all being set up, we can start playing
-            // the animation.
-            //
-            // now 'Spin' means the game is over
-            // this.text.startAnimation('Spin');
-
-            // Set up cursor interaction. We add the input behavior ButtonBehavior to the cube.
-            // Button behaviors have two pairs of events: hover start/stop, and click start/stop.
-            const buttonBehavior = this.cubes[tileIndexX].setBehavior(ButtonBehavior);
-
-            // Trigger the grow/shrink animations on hover.
-            // buttonBehavior.onHover('enter', (userId: string) => {
-            //     this.cube.startAnimation('GrowIn');
-            // }
-            // );
-            // buttonBehavior.onHover('exit', (userId: string) => {
-            //     this.cube.startAnimation('ShrinkOut');
-            // }
-            // );
-
-            // When clicked increment score
-            buttonBehavior.onHover('enter', (userId: string) => {
-                // first button is the reset button
-                if (tileIndexX === 0) {
-                    this.reset();
-                } else {
-                    const player = tileIndexX;
-                    this.scores[player] += 1;
-                    if (this.scores[player] >= 10) {
-                        // win condition met so spin
-                        this.text.startAnimation('Spin');
-                        // and update text
-                        this.text.text.contents = `Player ${player} Wins!!`;
-                    } else {
-                        this.updateScoreboard();
-                    }
-                }
-            });
-        }
+            }
+        }).value;
     }
 
     private updateScoreboard() {
-        this.text.text.contents = `${this.scores[1]} : ${this.scores[2]}`;
+        this.text.text.contents = this.scores.slice(1, 10).join(' : ');
     }
 
-    private reset() {
-        this.scores[1] = 0;
-        this.scores[2] = 0;
+    private updateGame() {
         this.updateScoreboard();
+        if (this.scores[1] >= this.scoreThreshold || this.scores[2] >= this.scoreThreshold) {
+            this.gameOver = true;
+            // TODO: handle ties
+            if (this.scores[1] >= this.scoreThreshold) {
+                this.text.text.contents = `Player 1 Wins!!`;
+            } else {
+                this.text.text.contents = `Player 2 Wins!!`;
+            }
+        }
     }
-
-    /**
-     * Generate keyframe data for a simple spin animation.
-     * @param duration The length of time in seconds it takes to complete a full revolution.
-     * @param axis The axis of rotation in local space.
-     */
-    private generateSpinKeyframes(duration: number, axis: Vector3): AnimationKeyframe[] {
-        return [{
-            time: 0 * duration,
-            value: { transform: { rotation: Quaternion.RotationAxis(axis, 0) } }
-        }, {
-            time: 0.25 * duration,
-            value: { transform: { rotation: Quaternion.RotationAxis(axis, Math.PI / 2) } }
-        }, {
-            time: 0.5 * duration,
-            value: { transform: { rotation: Quaternion.RotationAxis(axis, Math.PI) } }
-        }, {
-            time: 0.75 * duration,
-            value: { transform: { rotation: Quaternion.RotationAxis(axis, 3 * Math.PI / 2) } }
-        }, {
-            time: 1 * duration,
-            value: { transform: { rotation: Quaternion.RotationAxis(axis, 2 * Math.PI) } }
-        }, {
-            time: 2 * duration,
-            value: { transform: { rotation: Quaternion.RotationAxis(axis, 2 * Math.PI) } }
-        }];
-    }
-
-    private growAnimationData: AnimationKeyframe[] = [{
-        time: 0,
-        value: { transform: { scale: { x: 0.4, y: 0.4, z: 0.4 } } }
-    }, {
-        time: 0.3,
-        value: { transform: { scale: { x: 0.5, y: 0.5, z: 0.5 } } }
-    }];
-
-    private shrinkAnimationData: AnimationKeyframe[] = [{
-        time: 0,
-        value: { transform: { scale: { x: 0.5, y: 0.5, z: 0.5 } } }
-    }, {
-        time: 0.3,
-        value: { transform: { scale: { x: 0.4, y: 0.4, z: 0.4 } } }
-    }];
 }
