@@ -17,7 +17,7 @@ import {
 /**
  * The main class of this app. All the logic goes here.
  */
-export default class HelloWorld {
+export default class ScoreBoard {
     private text: Actor = null;
     private buttons: Actor[] = [null, null, null, null];
     private scores: number[] = [0, 0, 0, 0];
