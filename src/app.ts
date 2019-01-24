@@ -73,7 +73,7 @@ export default class ScoreBoard {
         // Set up cursor interaction. We add the input behavior ButtonBehavior to the cube.
         // Button behaviors have two pairs of events: hover start/stop, and click start/stop.
         const resetButton = this.buttons[0].setBehavior(ButtonBehavior);
-        resetButton.onHover('enter', (userId: string) => {
+        resetButton.onClick('pressed', (userId: string) => {
             this.scores = this.scores.map(x => 0);
             this.gameOver = false;
             this.updateScoreboard();
@@ -83,14 +83,14 @@ export default class ScoreBoard {
         this.createPlayerButton(2);
 
         const playerOneButton = this.buttons[1].setBehavior(ButtonBehavior);
-        playerOneButton.onHover('enter', (userId: string) => {
+        playerOneButton.onClick('pressed', (userId: string) => {
             if (this.gameOver) return;
             this.scores[1] = this.scores[1] + 1;
             this.updateGame();
         });
 
         const playerTwoButton = this.buttons[2].setBehavior(ButtonBehavior);
-        playerTwoButton.onHover('enter', (userId: string) => {
+        playerTwoButton.onClick('pressed', (userId: string) => {
             if (this.gameOver) return;
             this.scores[2] = this.scores[2] + 1;
             this.updateGame();
