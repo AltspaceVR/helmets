@@ -20,7 +20,7 @@ import {
 export default class ScoreBoard {
     private text: Actor = null;
     private buttons: Actor[] = [null, null, null, null];
-    private scores: number[] = [0, 0, 0, 0];
+    private scores: number[] = [0, 0, 0];
     private defaultMessage = "Shootout! First to 10 baskets Wins";
     private scoreThreshold = 10;
     private gameOver = false;
@@ -55,10 +55,20 @@ export default class ScoreBoard {
         // we can still get a reference to it by grabbing the `value` field from the forward promise.
         this.text = textPromise.value;
 
-        this.createButton(0);
-        this.createButton(1);
-        this.createButton(2);
-        this.createButton(3);
+        this.buttons[0] = Actor.CreateFromGLTF(this.context, {
+            // at the given URL
+            resourceUrl: `${this.baseUrl}/altspace-cube.glb`,
+            // and spawn box colliders around the meshes.
+            colliderType: 'box',
+            // Also apply the following generic actor properties.
+            actor: {
+                name: 'Altspace Cube',
+                transform: {
+                    position: { x: 0, y: 0, z: 0.0 },
+                    scale: { x: 0.1, y: 0.1, z: 0.1 }
+                }
+            }
+        }).value;
 
         // Set up cursor interaction. We add the input behavior ButtonBehavior to the cube.
         // Button behaviors have two pairs of events: hover start/stop, and click start/stop.
@@ -68,6 +78,9 @@ export default class ScoreBoard {
             this.gameOver = false;
             this.updateScoreboard();
         });
+
+        this.createPlayerButton(1);
+        this.createPlayerButton(2);
 
         const playerOneButton = this.buttons[1].setBehavior(ButtonBehavior);
         playerOneButton.onHover('enter', (userId: string) => {
@@ -83,15 +96,9 @@ export default class ScoreBoard {
             this.updateGame();
         });
 
-        const playerThreeButton = this.buttons[3].setBehavior(ButtonBehavior);
-        playerThreeButton.onHover('enter', (userId: string) => {
-            if (this.gameOver) return;
-            this.scores[3] = this.scores[3] + 1;
-            this.updateGame();
-        });
     }
 
-    private createButton(i: number) {
+    private createPlayerButton(i: number) {
         this.buttons[i] = Actor.CreateFromGLTF(this.context, {
             // at the given URL
             resourceUrl: `${this.baseUrl}/altspace-cube.glb`,
@@ -101,7 +108,7 @@ export default class ScoreBoard {
             actor: {
                 name: 'Altspace Cube',
                 transform: {
-                    position: { x: i - 1.0, y: 0.2, z: 0.0 },
+                    position: { x: i * 2 - 3.0, y: 0.2, z: 0.0 },
                     scale: { x: 0.4, y: 0.4, z: 0.4 }
                 }
             }

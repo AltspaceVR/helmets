@@ -11,9 +11,9 @@ process.on('uncaughtException', err => console.log('uncaughtException', err));
 process.on('unhandledRejection', reason => console.log('unhandledRejection', reason));
 
 // Start listening for connections, and serve static files
+// => set BASE_URL
 const server = new WebHost({
     baseDir: resolvePath(__dirname, '../public')
-    // set BASE_URL in the environment, please
 });
 
 // Handle new application sessions
