@@ -23,7 +23,9 @@ export default class ScoreBoard {
     private scores: number[] = [0, 0, 0];
     private defaultMessage = "Shootout! First to 10 baskets Wins";
     private scoreThreshold = 10;
-    private gameOver = false;
+    private gameOver = true;
+    private scoreKeeper: string = null;
+    private lastActiveAt: Date = null;
 
     constructor(private context: Context, private baseUrl: string) {
         this.context.onStarted(() => this.started());
@@ -70,13 +72,19 @@ export default class ScoreBoard {
             }
         }).value;
 
-        // Set up cursor interaction. We add the input behavior ButtonBehavior to the cube.
-        // Button behaviors have two pairs of events: hover start/stop, and click start/stop.
+        // The first person to click Reset will become the scorekeeper. Only the scorekeeper may click the
+        // buttons until the game is over
         const resetButton = this.buttons[0].setBehavior(ButtonBehavior);
         resetButton.onClick('pressed', (userId: string) => {
-            this.scores = this.scores.map(x => 0);
-            this.gameOver = false;
-            this.text.text.contents = this.defaultMessage;
+            const fiveMinutesAgo = new Date();
+            fiveMinutesAgo.setMinutes(fiveMinutesAgo.getMinutes() - 5);
+            if (userId === this.scoreKeeper || this.gameOver === true || this.lastActiveAt < fiveMinutesAgo) {
+                this.scores = this.scores.map(x => 0);
+                this.gameOver = false;
+                this.text.text.contents = this.defaultMessage;
+                this.scoreKeeper = userId;
+                this.lastActiveAt = new Date();
+            }
         });
 
         this.createPlayerButton(1);
@@ -84,16 +92,18 @@ export default class ScoreBoard {
 
         const playerOneButton = this.buttons[1].setBehavior(ButtonBehavior);
         playerOneButton.onClick('pressed', (userId: string) => {
-            if (this.gameOver) return;
-            this.scores[1] = this.scores[1] + 1;
-            this.updateGame();
+            if (!this.gameOver && userId === this.scoreKeeper) {
+                this.scores[1] = this.scores[1] + 1;
+                this.updateGame();
+            }
         });
 
         const playerTwoButton = this.buttons[2].setBehavior(ButtonBehavior);
         playerTwoButton.onClick('pressed', (userId: string) => {
-            if (this.gameOver) return;
-            this.scores[2] = this.scores[2] + 1;
-            this.updateGame();
+            if (!this.gameOver && userId === this.scoreKeeper) {
+                this.scores[2] = this.scores[2] + 1;
+                this.updateGame();
+            }
         });
 
     }
