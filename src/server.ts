@@ -13,8 +13,7 @@ process.on('unhandledRejection', reason => console.log('unhandledRejection', rea
 // Start listening for connections, and serve static files
 const server = new WebHost({
     baseDir: resolvePath(__dirname, '../public')
-    // baseDir: resolvePath(__dirname, '../public'),
-    // baseUrl: "http://10.0.1.89:3901"
+    // set BASE_URL in the environment, please
 });
 
 // Handle new application sessions
