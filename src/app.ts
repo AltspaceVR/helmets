@@ -76,7 +76,7 @@ export default class ScoreBoard {
         resetButton.onClick('pressed', (userId: string) => {
             this.scores = this.scores.map(x => 0);
             this.gameOver = false;
-            this.updateScoreboard();
+            this.text.text.contents = this.defaultMessage;
         });
 
         this.createPlayerButton(1);
