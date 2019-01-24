@@ -83,7 +83,7 @@ export default class ScoreBoard {
                 this.gameOver = false;
                 this.text.text.contents = this.defaultMessage;
                 this.scoreKeeper = userId;
-                this.lastActiveAt = new Date();
+                this.updateLastActive();
             }
         });
 
@@ -95,6 +95,7 @@ export default class ScoreBoard {
             if (!this.gameOver && userId === this.scoreKeeper) {
                 this.scores[1] = this.scores[1] + 1;
                 this.updateGame();
+                this.updateLastActive();
             }
         });
 
@@ -103,6 +104,7 @@ export default class ScoreBoard {
             if (!this.gameOver && userId === this.scoreKeeper) {
                 this.scores[2] = this.scores[2] + 1;
                 this.updateGame();
+                this.updateLastActive();
             }
         });
 
@@ -127,6 +129,10 @@ export default class ScoreBoard {
 
     private updateScoreboard() {
         this.text.text.contents = this.scores.slice(1, 10).join(' : ');
+    }
+
+    private updateLastActive() {
+        this.lastActiveAt = new Date();
     }
 
     private updateGame() {
