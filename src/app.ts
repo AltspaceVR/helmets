@@ -76,9 +76,9 @@ export default class ScoreBoard {
         // buttons until the game is over
         const resetButton = this.buttons[0].setBehavior(ButtonBehavior);
         resetButton.onClick('pressed', (userId: string) => {
-            const fiveMinutesAgo = new Date();
-            fiveMinutesAgo.setMinutes(fiveMinutesAgo.getMinutes() - 5);
-            if (userId === this.scoreKeeper || this.gameOver === true || this.lastActiveAt < fiveMinutesAgo) {
+            const lockPeriod = new Date();
+            lockPeriod.setMinutes(lockPeriod.getMinutes() - 2);
+            if (userId === this.scoreKeeper || this.gameOver === true || this.lastActiveAt < lockPeriod) {
                 this.scores = this.scores.map(x => 0);
                 this.gameOver = false;
                 this.text.text.contents = this.defaultMessage;
