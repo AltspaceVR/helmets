@@ -3,148 +3,205 @@
  * Licensed under the MIT License.
  */
 
-import {
-    Actor,
-    AnimationKeyframe,
-    AnimationWrapMode,
-    ButtonBehavior,
-    Context,
-    Quaternion,
-    TextAnchorLocation,
-    Vector3
-} from '@microsoft/mixed-reality-extension-sdk';
+import * as MRESDK from '@microsoft/mixed-reality-extension-sdk';
 
 /**
- * The main class of this app. All the logic goes here.
+ * The structure of a hat entry in the hat database.
  */
-export default class ScoreBoard {
-    private text: Actor = null;
-    private buttons: Actor[] = [null, null, null, null];
-    private scores: number[] = [0, 0, 0];
-    private defaultMessage = "Shootout! First to 10 baskets Wins";
-    private scoreThreshold = 10;
-    private gameOver = true;
-    private scoreKeeper: string = null;
-    private lastActiveAt: Date = null;
+type HatDescriptor = {
+    displayName: string;
+    resourceName: string;
+    scale: {
+        x: number;
+        y: number;
+        z: number;
+    };
+    rotation: {
+        x: number;
+        y: number;
+        z: number;
+    };
+    position: {
+        x: number;
+        y: number;
+        z: number;
+    };
+};
 
-    constructor(private context: Context, private baseUrl: string) {
+/**
+ * The structure of the hat database.
+ */
+type HatDatabase = {
+    [key: string]: HatDescriptor;
+};
+
+// Load the database of hats.
+// tslint:disable-next-line:no-var-requires variable-name
+const HatDatabase: HatDatabase = require('../public/hats.json');
+
+/**
+ * WearAHat Application - Showcasing avatar attachments.
+ */
+export default class WearAHat {
+    // Container for preloaded hat prefabs.
+    private prefabs: { [key: string]: MRESDK.AssetGroup } = {};
+    // Container for instantiated hats.
+    private attachedHats: { [key: string]: MRESDK.Actor } = {};
+
+    /**
+     * Constructs a new instance of this class.
+     * @param context The MRE SDK context.
+     * @param baseUrl The baseUrl to this project's `./public` folder.
+     */
+    constructor(private context: MRESDK.Context, private baseUrl: string) {
+        // Hook the context events we're interested in.
         this.context.onStarted(() => this.started());
+        this.context.onUserLeft(user => this.userLeft(user));
     }
 
     /**
-     * Once the context is "started", initialize the app.
+     * Called when a Hats application session starts up.
      */
-    private started() {
+    private async started() {
+        // Preload all the hat models.
+        await this.preloadHats();
+        // Show the hat menu.
+        this.showHatMenu();
+    }
 
-        // Create a new actor with no mesh, but some text. This operation is asynchronous, so
-        // it returns a "forward" promise (a special promise, as we'll see later).
-        const textPromise = Actor.CreateEmpty(this.context, {
-            actor: {
-                name: 'Text',
-                transform: {
-                    position: { x: 0, y: 1.0, z: 0 }
+    /**
+     * Called when a user leaves the application (probably left the Altspace world where this app is running).
+     * @param user The user that left the building.
+     */
+    private userLeft(user: MRESDK.User) {
+        // If the user was wearing a hat, destroy it. Otherwise it would be
+        // orphaned in the world.
+        if (this.attachedHats[user.id]) this.attachedHats[user.id].destroy();
+        delete this.attachedHats[user.id];
+    }
+
+    /**
+     * Show a menu of hat selections.
+     */
+    private showHatMenu() {
+        // Create a parent object for all the menu items.
+        const menu = MRESDK.Actor.CreateEmpty(this.context).value;
+        let y = 0.3;
+
+        // Loop over the hat database, creating a menu item for each entry.
+        for (const hatId of Object.keys(HatDatabase)) {
+            // Create a clickable button.
+            const button = MRESDK.Actor.CreatePrimitive(this.context, {
+                definition: {
+                    shape: MRESDK.PrimitiveShape.Box,
+                    dimensions: { x: 0.3, y: 0.3, z: 0.01 }
                 },
-                text: {
-                    contents: this.defaultMessage,
-                    anchor: TextAnchorLocation.MiddleCenter,
-                    color: { r: 30 / 255, g: 206 / 255, b: 213 / 255 },
-                    height: 0.3
+                addCollider: true,
+                actor: {
+                    parentId: menu.id,
+                    name: hatId,
+                    transform: {
+                        position: { x: 0, y, z: 0 }
+                    }
                 }
-            }
-        });
+            });
 
-        // Even though the actor is not yet created in Altspace (because we didn't wait for the promise),
-        // we can still get a reference to it by grabbing the `value` field from the forward promise.
-        this.text = textPromise.value;
+            // Set a click handler on the button.
+            button.value.setBehavior(MRESDK.ButtonBehavior)
+                .onClick('released', (userId: string) => this.wearHat(hatId, userId));
 
-        this.buttons[0] = Actor.CreateFromGLTF(this.context, {
-            // at the given URL
-            resourceUrl: `${this.baseUrl}/altspace-cube.glb`,
-            // and spawn box colliders around the meshes.
-            colliderType: 'box',
-            // Also apply the following generic actor properties.
-            actor: {
-                name: 'Altspace Cube',
-                transform: {
-                    position: { x: 0, y: 0, z: 0.0 },
-                    scale: { x: 0.1, y: 0.1, z: 0.1 }
+            // Create a label for the menu entry.
+            MRESDK.Actor.CreateEmpty(this.context, {
+                actor: {
+                    parentId: menu.id,
+                    name: 'label',
+                    text: {
+                        contents: HatDatabase[hatId].displayName,
+                        height: 0.5,
+                        anchor: MRESDK.TextAnchorLocation.MiddleLeft
+                    },
+                    transform: {
+                        position: { x: 0.5, y, z: 0 }
+                    }
                 }
-            }
-        }).value;
-
-        // The first person to click Reset will become the scorekeeper. Only the scorekeeper may click the
-        // buttons until the game is over
-        const resetButton = this.buttons[0].setBehavior(ButtonBehavior);
-        resetButton.onClick('pressed', (userId: string) => {
-            const lockPeriod = new Date();
-            lockPeriod.setMinutes(lockPeriod.getMinutes() - 2);
-            if (userId === this.scoreKeeper || this.gameOver === true || this.lastActiveAt < lockPeriod) {
-                this.scores = this.scores.map(x => 0);
-                this.gameOver = false;
-                this.text.text.contents = this.defaultMessage;
-                this.scoreKeeper = userId;
-                this.updateLastActive();
-            }
-        });
-
-        this.createPlayerButton(1);
-        this.createPlayerButton(2);
-
-        const playerOneButton = this.buttons[1].setBehavior(ButtonBehavior);
-        playerOneButton.onClick('pressed', (userId: string) => {
-            if (!this.gameOver && userId === this.scoreKeeper) {
-                this.scores[1] = this.scores[1] + 1;
-                this.updateGame();
-                this.updateLastActive();
-            }
-        });
-
-        const playerTwoButton = this.buttons[2].setBehavior(ButtonBehavior);
-        playerTwoButton.onClick('pressed', (userId: string) => {
-            if (!this.gameOver && userId === this.scoreKeeper) {
-                this.scores[2] = this.scores[2] + 1;
-                this.updateGame();
-                this.updateLastActive();
-            }
-        });
-
-    }
-
-    private createPlayerButton(i: number) {
-        this.buttons[i] = Actor.CreateFromGLTF(this.context, {
-            // at the given URL
-            resourceUrl: `${this.baseUrl}/altspace-cube.glb`,
-            // and spawn box colliders around the meshes.
-            colliderType: 'box',
-            // Also apply the following generic actor properties.
-            actor: {
-                name: 'Altspace Cube',
-                transform: {
-                    position: { x: i * 2 - 3.0, y: 0.2, z: 0.0 },
-                    scale: { x: 0.4, y: 0.4, z: 0.4 }
-                }
-            }
-        }).value;
-    }
-
-    private updateScoreboard() {
-        this.text.text.contents = this.scores.slice(1, 10).join(' : ');
-    }
-
-    private updateLastActive() {
-        this.lastActiveAt = new Date();
-    }
-
-    private updateGame() {
-        this.updateScoreboard();
-        if (this.scores[1] >= this.scoreThreshold || this.scores[2] >= this.scoreThreshold) {
-            this.gameOver = true;
-            // TODO: handle ties
-            if (this.scores[1] >= this.scoreThreshold) {
-                this.text.text.contents = `Player 1 Wins!!`;
-            } else {
-                this.text.text.contents = `Player 2 Wins!!`;
-            }
+            });
+            y = y + 0.5;
         }
+
+        // Create a label for the menu title.
+        MRESDK.Actor.CreateEmpty(this.context, {
+            actor: {
+                parentId: menu.id,
+                name: 'label',
+                text: {
+                    contents: ''.padStart(8, ' ') + "Wear a Hat",
+                    height: 0.8,
+                    anchor: MRESDK.TextAnchorLocation.MiddleCenter,
+                    color: MRESDK.Color3.Yellow()
+                },
+                transform: {
+                    position: { x: 0.5, y: y + 0.25, z: 0 }
+                }
+            }
+        });
+    }
+
+    /**
+     * Preload all hat resources. This makes instantiating them faster and more efficient.
+     */
+    private preloadHats() {
+        // Loop over the hat database, preloading each hat resource.
+        // Return a promise of all the in-progress load promises. This
+        // allows the caller to wait until all hats are done preloading
+        // before continuing.
+        return Promise.all(
+            Object.keys(HatDatabase).map(hatId => {
+                const hatRecord = HatDatabase[hatId];
+                if (hatRecord.resourceName) {
+                    return this.context.assetManager.loadGltf(
+                        hatId, `${this.baseUrl}/${hatRecord.resourceName}`)
+                        .then(assetGroup => this.prefabs[hatId] = assetGroup)
+                        .catch(e => console.error(e));
+                } else {
+                    return Promise.resolve();
+                }
+            }));
+    }
+
+    /**
+     * Instantiate a hat and attach it to the avatar's head.
+     * @param hatId The id of the hat in the hat database.
+     * @param userId The id of the user we will attach the hat to.
+     */
+    private wearHat(hatId: string, userId: string) {
+        // If the user is wearing a hat, destroy it.
+        if (this.attachedHats[userId]) this.attachedHats[userId].destroy();
+        delete this.attachedHats[userId];
+
+        const hatRecord = HatDatabase[hatId];
+
+        // If the user selected 'none', then early out.
+        if (!hatRecord.resourceName) {
+            return;
+        }
+
+        // Create the hat model and attach it to the avatar's head.
+        this.attachedHats[userId] = MRESDK.Actor.CreateFromPrefab(this.context, {
+            prefabId: this.prefabs[hatId].prefabs.byIndex(0).id,
+            actor: {
+                transform: {
+                    position: hatRecord.position,
+                    rotation: MRESDK.Quaternion.FromEulerAngles(
+                        hatRecord.rotation.x * MRESDK.DegreesToRadians,
+                        hatRecord.rotation.y * MRESDK.DegreesToRadians,
+                        hatRecord.rotation.z * MRESDK.DegreesToRadians),
+                    scale: hatRecord.scale,
+                },
+                attachment: {
+                    attachPoint: 'head',
+                    userId
+                }
+            }
+        }).value;
     }
 }
