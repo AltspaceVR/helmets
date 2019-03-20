@@ -37,7 +37,7 @@ type HatDatabase = {
 
 // Load the database of hats.
 // tslint:disable-next-line:no-var-requires variable-name
-const HatDatabase: HatDatabase = require('../public/hats.json');
+const HatDatabase: HatDatabase = require('../public/1166467957212054271_space_helmets.json');
 
 /**
  * WearAHat Application - Showcasing avatar attachments.
