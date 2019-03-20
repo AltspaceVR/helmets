@@ -187,21 +187,24 @@ export default class WearAHat {
 
         // Create the hat model and attach it to the avatar's head.
 
+        // Jimmy
+        const helmetScale = 1.2
+
         this.attachedHats[userId] = MRESDK.Actor.CreateFromLibrary(this.context, {
-            resourceId: "artifact:1166550824378171996",
+            resourceId: "artifact:1166530075533771277",
             actor: {
                 transform: {
                     position: { x: 0, y: 0, z: 0 },
                     rotation: MRESDK.Quaternion.FromEulerAngles(
                         0 * MRESDK.DegreesToRadians,
-                        0 * MRESDK.DegreesToRadians,
+                        180 * MRESDK.DegreesToRadians,
                         0 * MRESDK.DegreesToRadians),
-                    scale: { x: 1, y: 1, z: 1 }
-                }//,
-                // attachment: {
-                //     attachPoint: 'head',
-                //     userId
-                // }
+                    scale: { x: helmetScale, y: helmetScale, z: helmetScale }
+                },
+                attachment: {
+                    attachPoint: 'head',
+                    userId
+                }
             }
         }).value;
 
