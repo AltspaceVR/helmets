@@ -72,12 +72,20 @@
         }
     },
     "clear": {
-        "displayName": "! Clear"
+        "displayName": "! Clear",
+        "resourceId": "artifact:1150513214480450500"
     },
     "moveup": {
-        "displayName": "! Move Up 0.01"
+        "displayName": "! Move Up 0.01",
+        "resourceId": "artifact:1150513195203429312"
     },
     "movedown": {
-        "displayName": "! Move Down 0.01"
+        "displayName": "! Move Down 0.01",
+        "resourceId": "artifact:1150513195203429312",
+        "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 180
+        }
     }
 }

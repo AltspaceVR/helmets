@@ -84,65 +84,71 @@ export default class WearAHat {
     private showHatMenu() {
         // Create a parent object for all the menu items.
         const menu = MRESDK.Actor.CreateEmpty(this.context).value;
-        let y = 0.3;
+        let x = 0;
 
         // Loop over the hat database, creating a menu item for each entry.
-        // => reverse it so it matches the order of the JSON file
-        for (const hatId of Object.keys(HatDatabase).reverse()) {
+        for (const hatId of Object.keys(HatDatabase)) {
+            const hatRecord = HatDatabase[hatId];
+
             // Create a clickable button.
             const button = MRESDK.Actor.CreatePrimitive(this.context, {
                 definition: {
                     shape: MRESDK.PrimitiveShape.Box,
-                    dimensions: { x: 0.3, y: 0.3, z: 0.01 }
+                    dimensions: { x: 0.3, y: 0.3, z: 0.3 }
                 },
                 addCollider: true,
                 actor: {
                     parentId: menu.id,
                     name: hatId,
                     transform: {
-                        position: { x: 0, y, z: 0 }
+                        position: { x, y: 0, z: 0 }
                     }
                 }
             });
+
+            if (hatRecord.resourceId) {
+                const rotation = hatId == "movedown" ? hatRecord.rotation : { x: 0, y: 0, z: 0 }
+
+                // Create a clickable Artifact
+                MRESDK.Actor.CreateFromLibrary(this.context, {
+                    resourceId: hatRecord.resourceId,
+                    actor: {
+                        transform: {
+                            position: { x, y: 1, z: 0 },
+                            rotation: MRESDK.Quaternion.FromEulerAngles(
+                                rotation.x * MRESDK.DegreesToRadians,
+                                rotation.y * MRESDK.DegreesToRadians,
+                                rotation.z * MRESDK.DegreesToRadians),
+                            scale: { x: 3, y: 3, z: 3 }
+                        }
+                    }
+                }).value;
+            }
+            else {
+                // // Create a label for the menu entry.
+                // MRESDK.Actor.CreateEmpty(this.context, {
+                //     actor: {
+                //         parentId: menu.id,
+                //         name: 'label',
+                //         text: {
+                //             contents: HatDatabase[hatId].displayName,
+                //             height: 0.5,
+                //             anchor: MRESDK.TextAnchorLocation.MiddleLeft
+                //         },
+                //         transform: {
+                //             position: { x, y: 0, z: 0 }
+                //         }
+                //     }
+                // });
+            }
+
 
             // Set a click handler on the button.
             button.value.setBehavior(MRESDK.ButtonBehavior)
                 .onClick('released', (userId: string) => this.wearHat(hatId, userId));
 
-            // Create a label for the menu entry.
-            MRESDK.Actor.CreateEmpty(this.context, {
-                actor: {
-                    parentId: menu.id,
-                    name: 'label',
-                    text: {
-                        contents: HatDatabase[hatId].displayName,
-                        height: 0.5,
-                        anchor: MRESDK.TextAnchorLocation.MiddleLeft
-                    },
-                    transform: {
-                        position: { x: 0.5, y, z: 0 }
-                    }
-                }
-            });
-            y = y + 0.5;
+            x += 1.5;
         }
-
-        // Create a label for the menu title.
-        MRESDK.Actor.CreateEmpty(this.context, {
-            actor: {
-                parentId: menu.id,
-                name: 'label',
-                text: {
-                    contents: ''.padStart(8, ' ') + "Wear a Helmet",
-                    height: 0.8,
-                    anchor: MRESDK.TextAnchorLocation.MiddleCenter,
-                    color: MRESDK.Color3.Yellow()
-                },
-                transform: {
-                    position: { x: 0.5, y: y + 0.25, z: 0 }
-                }
-            }
-        });
     }
 
     /**
