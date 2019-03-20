@@ -187,8 +187,27 @@ export default class WearAHat {
 
         // Create the hat model and attach it to the avatar's head.
 
-        // this.attachedHats[userId] = MRESDK.Actor.CreateFromLibrary(this.context, {
-        //     resourceId: "artifact:1166550824378171996",
+        this.attachedHats[userId] = MRESDK.Actor.CreateFromLibrary(this.context, {
+            resourceId: "artifact:1166550824378171996",
+            actor: {
+                transform: {
+                    position: { x: 0, y: 0, z: 0 },
+                    rotation: MRESDK.Quaternion.FromEulerAngles(
+                        0 * MRESDK.DegreesToRadians,
+                        0 * MRESDK.DegreesToRadians,
+                        0 * MRESDK.DegreesToRadians),
+                    scale: { x: 1, y: 1, z: 1 }
+                }//,
+                // attachment: {
+                //     attachPoint: 'head',
+                //     userId
+                // }
+            }
+        }).value;
+
+
+        // this.attachedHats[userId] = MRESDK.Actor.CreateFromPrefab(this.context, {
+        //     prefabId: this.prefabs[hatId].prefabs.byIndex(0).id,
         //     actor: {
         //         transform: {
         //             position: hatRecord.position,
@@ -196,7 +215,7 @@ export default class WearAHat {
         //                 hatRecord.rotation.x * MRESDK.DegreesToRadians,
         //                 hatRecord.rotation.y * MRESDK.DegreesToRadians,
         //                 hatRecord.rotation.z * MRESDK.DegreesToRadians),
-        //             scale: hatRecord.scale
+        //             scale: hatRecord.scale,
         //         },
         //         attachment: {
         //             attachPoint: 'head',
@@ -204,24 +223,5 @@ export default class WearAHat {
         //         }
         //     }
         // }).value;
-
-
-        this.attachedHats[userId] = MRESDK.Actor.CreateFromPrefab(this.context, {
-            prefabId: this.prefabs[hatId].prefabs.byIndex(0).id,
-            actor: {
-                transform: {
-                    position: hatRecord.position,
-                    rotation: MRESDK.Quaternion.FromEulerAngles(
-                        hatRecord.rotation.x * MRESDK.DegreesToRadians,
-                        hatRecord.rotation.y * MRESDK.DegreesToRadians,
-                        hatRecord.rotation.z * MRESDK.DegreesToRadians),
-                    scale: hatRecord.scale,
-                },
-                attachment: {
-                    attachPoint: 'head',
-                    userId
-                }
-            }
-        }).value;
     }
 }
