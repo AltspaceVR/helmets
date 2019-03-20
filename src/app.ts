@@ -186,22 +186,35 @@ export default class WearAHat {
         }
 
         // Create the hat model and attach it to the avatar's head.
-        this.attachedHats[userId] = MRESDK.Actor.CreateFromPrefab(this.context, {
-            prefabId: this.prefabs[hatId].prefabs.byIndex(0).id,
+
+        this.attachedHats[userId] = MRESDK.Actor.CreateFromLibrary(this.context, {
+            resourceId: "artifact:1166550824378171996",
             actor: {
                 transform: {
-                    position: hatRecord.position,
-                    rotation: MRESDK.Quaternion.FromEulerAngles(
-                        hatRecord.rotation.x * MRESDK.DegreesToRadians,
-                        hatRecord.rotation.y * MRESDK.DegreesToRadians,
-                        hatRecord.rotation.z * MRESDK.DegreesToRadians),
-                    scale: hatRecord.scale,
-                },
-                attachment: {
-                    attachPoint: 'head',
-                    userId
+                    position: { x: 0, y: 0, z: 0 },
+                    rotation: MRESDK.Quaternion.RotationAxis(MRESDK.Vector3.Up(), -90 * MRESDK.DegreesToRadians),
+                    scale: { x: 1.2, y: 1.2, z: 1.2}
                 }
             }
         }).value;
+
+
+        // this.attachedHats[userId] = MRESDK.Actor.CreateFromPrefab(this.context, {
+        //     prefabId: this.prefabs[hatId].prefabs.byIndex(0).id,
+        //     actor: {
+        //         transform: {
+        //             position: hatRecord.position,
+        //             rotation: MRESDK.Quaternion.FromEulerAngles(
+        //                 hatRecord.rotation.x * MRESDK.DegreesToRadians,
+        //                 hatRecord.rotation.y * MRESDK.DegreesToRadians,
+        //                 hatRecord.rotation.z * MRESDK.DegreesToRadians),
+        //             scale: hatRecord.scale,
+        //         },
+        //         attachment: {
+        //             attachPoint: 'head',
+        //             userId
+        //         }
+        //     }
+        // }).value;
     }
 }
