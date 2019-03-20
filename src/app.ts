@@ -37,7 +37,7 @@ type HatDatabase = {
 
 // Load the database of hats.
 // tslint:disable-next-line:no-var-requires variable-name
-const HatDatabase: HatDatabase = require('../public/1166467957212054271_space_helmets.json');
+var HatDatabase: HatDatabase = {};
 
 /**
  * WearAHat Application - Showcasing avatar attachments.
@@ -53,9 +53,24 @@ export default class WearAHat {
      * @param context The MRE SDK context.
      * @param baseUrl The baseUrl to this project's `./public` folder.
      */
-    constructor(private context: MRESDK.Context, private baseUrl: string) {
+    constructor(private context: MRESDK.Context, private params: MRESDK.ParameterSet, private baseUrl: string) {
         // Hook the context events we're interested in.
-        this.context.onStarted(() => this.started());
+        this.context.onStarted(() => {
+            // Choose the set of helmets
+            // e.g. ws://10.0.1.89:3901?kit=city_helmets
+            switch(this.params.kit) {
+                case "city_helmets": {
+                    HatDatabase = require('../public/1167643861778956427_city_helmets');
+                    break;
+                }
+                default: {
+                    HatDatabase = require('../public/1166467957212054271_space_helmets.json');
+                    break;
+                }
+            }
+
+            this.started();
+        });
         this.context.onUserLeft(user => this.userLeft(user));
     }
 

@@ -19,4 +19,4 @@ const server = new WebHost({
 });
 
 // Handle new application sessions
-server.adapter.onConnection(context => new WearAHat(context, server.baseUrl));
+server.adapter.onConnection((context, params) => new WearAHat(context, params, server.baseUrl));

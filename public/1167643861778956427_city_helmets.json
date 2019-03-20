@@ -1,0 +1,47 @@
+{
+    "spacehelmet": {
+        "displayName": "Space Helmet",
+        "resourceId": "artifact:1166530075533771277",
+        "scale": {
+            "x": 1.3,
+            "y": 1.3,
+            "z": 1.3
+        },
+        "position": {
+            "x": 0,
+            "y": -0.04,
+            "z": 0
+        }
+    },
+    "warrobot": {
+        "displayName": "War Robot",
+        "resourceId": "artifact:1166573961752871901",
+        "scale": {
+            "x": 2.5,
+            "y": 2.5,
+            "z": 2.5
+        },
+        "position": {
+            "x": 0,
+            "y": 0.13,
+            "z": 0
+        }
+    },
+    "clear": {
+        "displayName": "! Clear",
+        "resourceId": "artifact:1150513214480450500"
+    },
+    "moveup": {
+        "displayName": "! Move Up 0.01",
+        "resourceId": "artifact:1150513195203429312"
+    },
+    "movedown": {
+        "displayName": "! Move Down 0.01",
+        "resourceId": "artifact:1150513195203429312",
+        "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 180
+        }
+    }
+}
