@@ -10,7 +10,7 @@ import * as MRESDK from '@microsoft/mixed-reality-extension-sdk';
  */
 type HatDescriptor = {
     displayName: string;
-    resourceName: string;
+    resourceId: string;
     scale: {
         x: number;
         y: number;
@@ -63,8 +63,6 @@ export default class WearAHat {
      * Called when a Hats application session starts up.
      */
     private async started() {
-        // Preload all the hat models.
-        await this.preloadHats();
         // Show the hat menu.
         this.showHatMenu();
     }
@@ -147,28 +145,6 @@ export default class WearAHat {
     }
 
     /**
-     * Preload all hat resources. This makes instantiating them faster and more efficient.
-     */
-    private preloadHats() {
-        // Loop over the hat database, preloading each hat resource.
-        // Return a promise of all the in-progress load promises. This
-        // allows the caller to wait until all hats are done preloading
-        // before continuing.
-        return Promise.all(
-            Object.keys(HatDatabase).map(hatId => {
-                const hatRecord = HatDatabase[hatId];
-                if (hatRecord.resourceName) {
-                    return this.context.assetManager.loadGltf(
-                        hatId, `${this.baseUrl}/${hatRecord.resourceName}`)
-                        .then(assetGroup => this.prefabs[hatId] = assetGroup)
-                        .catch(e => console.error(e));
-                } else {
-                    return Promise.resolve();
-                }
-            }));
-    }
-
-    /**
      * Instantiate a hat and attach it to the avatar's head.
      * @param hatId The id of the hat in the hat database.
      * @param userId The id of the user we will attach the hat to.
@@ -181,25 +157,23 @@ export default class WearAHat {
         const hatRecord = HatDatabase[hatId];
 
         // If the user selected 'none', then early out.
-        if (!hatRecord.resourceName) {
+        if (!hatRecord.resourceId) {
             return;
         }
 
         // Create the hat model and attach it to the avatar's head.
 
         // Jimmy
-        const helmetScale = 1.2
-
         this.attachedHats[userId] = MRESDK.Actor.CreateFromLibrary(this.context, {
-            resourceId: "artifact:1166530075533771277",
+            resourceId: hatRecord.resourceId,
             actor: {
                 transform: {
-                    position: { x: 0, y: 0, z: 0 },
+                    position: hatRecord.position,
                     rotation: MRESDK.Quaternion.FromEulerAngles(
-                        0 * MRESDK.DegreesToRadians,
-                        180 * MRESDK.DegreesToRadians,
-                        0 * MRESDK.DegreesToRadians),
-                    scale: { x: helmetScale, y: helmetScale, z: helmetScale }
+                        hatRecord.rotation.x * MRESDK.DegreesToRadians,
+                        hatRecord.rotation.y * MRESDK.DegreesToRadians,
+                        hatRecord.rotation.z * MRESDK.DegreesToRadians),
+                    scale: hatRecord.scale
                 },
                 attachment: {
                     attachPoint: 'head',
