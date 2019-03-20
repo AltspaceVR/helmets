@@ -1,7 +1,4 @@
 {
-    "none": {
-        "displayName": "None"
-    },
     "bigalien": {
         "displayName": "Big Alien",
         "resourceId": "artifact:1166530080650822158"
@@ -14,9 +11,17 @@
         "displayName": "Captain Male",
         "resourceId": "artifact:1166596359604666470"
     },
+    "spacehelmet": {
+        "displayName": "Space Helmet",
+        "resourceId": "artifact:1166530075533771277"
+    },
     "hunterfemale": {
         "displayName": "Hunter Female",
         "resourceId": "artifact:1166573948893135616"
+    },
+    "spacehelmet": {
+        "displayName": "Space Helmet",
+        "resourceId": "artifact:1166530075533771277"
     },
     "junkerfemale": {
         "displayName": "Junker Female",
@@ -44,6 +49,25 @@
     },
     "warrobot": {
         "displayName": "War Robot",
-        "resourceId": "artifact:1166573961752871901"
+        "resourceId": "artifact:1166573961752871901",
+        "scale": {
+            "x": 2.5,
+            "y": 2.5,
+            "z": 2.5
+        },
+        "position": {
+            "x": 0,
+            "y": 0.13,
+            "z": 0
+        }
+    },
+    "clear": {
+        "displayName": "! Clear"
+    },
+    "moveup": {
+        "displayName": "! Move Up 0.01"
+    },
+    "movedown": {
+        "displayName": "! Move Down 0.01"
     }
 }

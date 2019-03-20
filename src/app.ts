@@ -87,7 +87,8 @@ export default class WearAHat {
         let y = 0.3;
 
         // Loop over the hat database, creating a menu item for each entry.
-        for (const hatId of Object.keys(HatDatabase)) {
+        // => reverse it so it matches the order of the JSON file
+        for (const hatId of Object.keys(HatDatabase).reverse()) {
             // Create a clickable button.
             const button = MRESDK.Actor.CreatePrimitive(this.context, {
                 definition: {
@@ -150,16 +151,28 @@ export default class WearAHat {
      * @param userId The id of the user we will attach the hat to.
      */
     private wearHat(hatId: string, userId: string) {
+        // If the user selected 'clear', then early out.
+        if (hatId == "clear") {
+            // If the user is wearing a hat, destroy it.
+            if (this.attachedHats[userId]) this.attachedHats[userId].destroy();
+            delete this.attachedHats[userId];
+            return;
+        }
+        else if (hatId == "moveup") {
+            this.attachedHats[userId].transform.position.y += 0.01;
+            return;
+        }
+        else if (hatId == "movedown") {
+            this.attachedHats[userId].transform.position.y -= 0.01;
+            return;
+        }
+
         // If the user is wearing a hat, destroy it.
         if (this.attachedHats[userId]) this.attachedHats[userId].destroy();
         delete this.attachedHats[userId];
 
         const hatRecord = HatDatabase[hatId];
 
-        // If the user selected 'none', then early out.
-        if (!hatRecord.resourceId) {
-            return;
-        }
 
         // Create the hat model and attach it to the avatar's head.
 
