@@ -134,7 +134,7 @@ export default class WearAHat {
                 parentId: menu.id,
                 name: 'label',
                 text: {
-                    contents: ''.padStart(8, ' ') + "Wear a Hat",
+                    contents: ''.padStart(8, ' ') + "Wear a Helmet",
                     height: 0.8,
                     anchor: MRESDK.TextAnchorLocation.MiddleCenter,
                     color: MRESDK.Color3.Yellow()
@@ -187,20 +187,8 @@ export default class WearAHat {
 
         // Create the hat model and attach it to the avatar's head.
 
-        this.attachedHats[userId] = MRESDK.Actor.CreateFromLibrary(this.context, {
-            resourceId: "artifact:1166550824378171996",
-            actor: {
-                transform: {
-                    position: { x: 0, y: 0, z: 0 },
-                    rotation: MRESDK.Quaternion.RotationAxis(MRESDK.Vector3.Up(), -90 * MRESDK.DegreesToRadians),
-                    scale: { x: 1.2, y: 1.2, z: 1.2}
-                }
-            }
-        }).value;
-
-
-        // this.attachedHats[userId] = MRESDK.Actor.CreateFromPrefab(this.context, {
-        //     prefabId: this.prefabs[hatId].prefabs.byIndex(0).id,
+        // this.attachedHats[userId] = MRESDK.Actor.CreateFromLibrary(this.context, {
+        //     resourceId: "artifact:1166550824378171996",
         //     actor: {
         //         transform: {
         //             position: hatRecord.position,
@@ -208,7 +196,7 @@ export default class WearAHat {
         //                 hatRecord.rotation.x * MRESDK.DegreesToRadians,
         //                 hatRecord.rotation.y * MRESDK.DegreesToRadians,
         //                 hatRecord.rotation.z * MRESDK.DegreesToRadians),
-        //             scale: hatRecord.scale,
+        //             scale: hatRecord.scale
         //         },
         //         attachment: {
         //             attachPoint: 'head',
@@ -216,5 +204,24 @@ export default class WearAHat {
         //         }
         //     }
         // }).value;
+
+
+        this.attachedHats[userId] = MRESDK.Actor.CreateFromPrefab(this.context, {
+            prefabId: this.prefabs[hatId].prefabs.byIndex(0).id,
+            actor: {
+                transform: {
+                    position: hatRecord.position,
+                    rotation: MRESDK.Quaternion.FromEulerAngles(
+                        hatRecord.rotation.x * MRESDK.DegreesToRadians,
+                        hatRecord.rotation.y * MRESDK.DegreesToRadians,
+                        hatRecord.rotation.z * MRESDK.DegreesToRadians),
+                    scale: hatRecord.scale,
+                },
+                attachment: {
+                    attachPoint: 'head',
+                    userId
+                }
+            }
+        }).value;
     }
 }
