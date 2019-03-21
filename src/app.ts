@@ -189,6 +189,18 @@ export default class WearAHat {
             this.attachedHats[userId].transform.position.y -= 0.01;
             return;
         }
+        else if (hatId == "sizeup") {
+            this.attachedHats[userId].transform.scale.x += 0.01;
+            this.attachedHats[userId].transform.scale.y += 0.01;
+            this.attachedHats[userId].transform.scale.z += 0.01;
+            return;
+        }
+        else if (hatId == "sizedown") {
+            this.attachedHats[userId].transform.scale.x -= 0.01;
+            this.attachedHats[userId].transform.scale.y -= 0.01;
+            this.attachedHats[userId].transform.scale.z -= 0.01;
+            return;
+        }
 
         // If the user is wearing a hat, destroy it.
         if (this.attachedHats[userId]) this.attachedHats[userId].destroy();
