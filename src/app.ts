@@ -9,7 +9,6 @@ import * as MRESDK from '@microsoft/mixed-reality-extension-sdk';
  * The structure of a hat entry in the hat database.
  */
 type HatDescriptor = {
-    displayName: string;
     resourceId: string;
     scale: {
         x: number;
@@ -110,9 +109,10 @@ export default class WearAHat {
             var button;
 
             if (hatRecord.resourceId) {
-                let regex: RegExp = /^(move|size)(up|down)/;
-                const rotation = regex.test(hatId) ? hatRecord.rotation : { x: 0, y: 0, z: 0 }
-                const scale = regex.test(hatId) ? hatRecord.scale : { x: 3, y: 3, z: 3 }
+                // special scaling and rotation for commands
+                let regex: RegExp = /!$/; // e.g. clear!
+                const rotation = (regex.test(hatId) && hatRecord.rotation) ? hatRecord.rotation : { x: 0, y: 0, z: 0 }
+                const scale = (regex.test(hatId) && hatRecord.scale) ? hatRecord.scale : { x: 3, y: 3, z: 3 }
 
                 // Create a clickable Artifact
                 button = MRESDK.Actor.CreateFromLibrary(this.context, {
@@ -178,27 +178,27 @@ export default class WearAHat {
      */
     private wearHat(hatId: string, userId: string) {
         // If the user selected 'clear', then early out.
-        if (hatId == "clear") {
+        if (hatId == "clear!") {
             // If the user is wearing a hat, destroy it.
             if (this.attachedHats[userId]) this.attachedHats[userId].destroy();
             delete this.attachedHats[userId];
             return;
         }
-        else if (hatId == "moveup") {
+        else if (hatId == "moveup!") {
             this.attachedHats[userId].transform.position.y += 0.01;
             return;
         }
-        else if (hatId == "movedown") {
+        else if (hatId == "movedown!") {
             this.attachedHats[userId].transform.position.y -= 0.01;
             return;
         }
-        else if (hatId == "sizeup") {
+        else if (hatId == "sizeup!") {
             this.attachedHats[userId].transform.scale.x += 0.01;
             this.attachedHats[userId].transform.scale.y += 0.01;
             this.attachedHats[userId].transform.scale.z += 0.01;
             return;
         }
-        else if (hatId == "sizedown") {
+        else if (hatId == "sizedown!") {
             this.attachedHats[userId].transform.scale.x -= 0.01;
             this.attachedHats[userId].transform.scale.y -= 0.01;
             this.attachedHats[userId].transform.scale.z -= 0.01;
@@ -211,9 +211,7 @@ export default class WearAHat {
 
         const hatRecord = HatDatabase[hatId];
 
-
         // Create the hat model and attach it to the avatar's head.
-
         // Jimmy
 
         const position = hatRecord.position ? hatRecord.position : { x: 0, y: 0, z: 0 }

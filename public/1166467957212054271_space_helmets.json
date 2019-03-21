@@ -1,46 +1,35 @@
 {
     "bigalien": {
-        "displayName": "Big Alien",
         "resourceId": "artifact:1166530080650822158"
     },
     "captainfemale": {
-        "displayName": "Captain Female",
         "resourceId": "artifact:1166596354386952293"
     },
     "captainmale": {
-        "displayName": "Captain Male",
         "resourceId": "artifact:1166596359604666470"
     },
     "spacehelmet": {
-        "displayName": "Space Helmet",
         "resourceId": "artifact:1166530075533771277"
     },
     "hunterfemale": {
-        "displayName": "Hunter Female",
         "resourceId": "artifact:1166573948893135616"
     },
     "spacehelmet": {
-        "displayName": "Space Helmet",
         "resourceId": "artifact:1166530075533771277"
     },
     "junkerfemale": {
-        "displayName": "Junker Female",
         "resourceId": "artifact:1166550829503611485"
     },
     "junkermale": {
-        "displayName": "Junker Male",
         "resourceId": "artifact:1166550824378171996"
     },
     "medicmale": {
-        "displayName": "Medic Male",
         "resourceId": "artifact:1166577920605421737"
     },
     "psionic": {
-        "displayName": "Psionic",
         "resourceId": "artifact:1166573953859191673"
     },
     "spacehelmet": {
-        "displayName": "Space Helmet",
         "resourceId": "artifact:1166530075533771277",
         "scale": {
             "x": 1.3,
@@ -54,11 +43,9 @@
         }
     },
     "spacesoldiermale": {
-        "displayName": "Space Soldier Male",
         "resourceId": "artifact:1166469656223940751"
     },
     "warrobot": {
-        "displayName": "War Robot",
         "resourceId": "artifact:1166573961752871901",
         "scale": {
             "x": 2.5,

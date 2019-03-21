@@ -1,30 +1,23 @@
 {
-    "spacehelmet": {
-        "displayName": "Space Helmet",
-        "resourceId": "artifact:1166530075533771277",
-        "scale": {
-            "x": 1.3,
-            "y": 1.3,
-            "z": 1.3
-        },
-        "position": {
-            "x": 0,
-            "y": -0.04,
-            "z": 0
-        }
+    "businessman": {
+        "resourceId": "artifact:1167890491962818802"
     },
-    "warrobot": {
-        "displayName": "War Robot",
-        "resourceId": "artifact:1166573961752871901",
-        "scale": {
-            "x": 2.5,
-            "y": 2.5,
-            "z": 2.5
-        },
-        "position": {
-            "x": 0,
-            "y": 0.13,
-            "z": 0
-        }
+    "businesswoman": {
+        "resourceId": "artifact:1167890476561334511"
+    },
+    "femalecoat": {
+        "resourceId": "artifact:1167890502222086388"
+    },
+    "femalejacket": {
+        "resourceId": "artifact:1167890497188921587"
+    },
+    "femalepolice": {
+        "resourceId": "artifact:1167890486736716017"
+    },
+    "malejacket": {
+        "resourceId": "artifact:1167890465857470701"
+    },
+    "malepolice": {
+        "resourceId": "artifact:1167890481678385392"
     }
 }
