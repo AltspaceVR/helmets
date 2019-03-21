@@ -106,26 +106,13 @@ export default class WearAHat {
             const hatRecord = HatDatabase[hatId];
 
             // Create a clickable button.
-            const button = MRESDK.Actor.CreatePrimitive(this.context, {
-                definition: {
-                    shape: MRESDK.PrimitiveShape.Box,
-                    dimensions: { x: 0.3, y: 0.3, z: 0.3 }
-                },
-                addCollider: true,
-                actor: {
-                    parentId: menu.id,
-                    name: hatId,
-                    transform: {
-                        position: { x, y: 0, z: 0 }
-                    }
-                }
-            });
+            var button;
 
             if (hatRecord.resourceId) {
                 const rotation = hatId == "movedown" ? hatRecord.rotation : { x: 0, y: 0, z: 0 }
 
                 // Create a clickable Artifact
-                MRESDK.Actor.CreateFromLibrary(this.context, {
+                button = MRESDK.Actor.CreateFromLibrary(this.context, {
                     resourceId: hatRecord.resourceId,
                     actor: {
                         transform: {
@@ -137,9 +124,24 @@ export default class WearAHat {
                             scale: { x: 3, y: 3, z: 3 }
                         }
                     }
-                }).value;
+                });
             }
             else {
+                button = MRESDK.Actor.CreatePrimitive(this.context, {
+                    definition: {
+                        shape: MRESDK.PrimitiveShape.Box,
+                        dimensions: { x: 0.3, y: 0.3, z: 0.3 }
+                    },
+                    addCollider: true,
+                    actor: {
+                        parentId: menu.id,
+                        name: hatId,
+                        transform: {
+                            position: { x, y: 0, z: 0 }
+                        }
+                    }
+                });
+
                 // // Create a label for the menu entry.
                 // MRESDK.Actor.CreateEmpty(this.context, {
                 //     actor: {
