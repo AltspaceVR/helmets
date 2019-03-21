@@ -28,17 +28,6 @@ type HatDescriptor = {
 };
 
 /**
- * The structure of the hat database.
- */
-type HatDatabase = {
-    [key: string]: HatDescriptor;
-};
-
-// Load the database of hats.
-// tslint:disable-next-line:no-var-requires variable-name
-var HatDatabase: HatDatabase = {};
-
-/**
  * WearAHat Application - Showcasing avatar attachments.
  */
 export default class WearAHat {
@@ -46,6 +35,10 @@ export default class WearAHat {
     private prefabs: { [key: string]: MRESDK.AssetGroup } = {};
     // Container for instantiated hats.
     private attachedHats: { [key: string]: MRESDK.Actor } = {};
+
+    // Load the database of hats.
+    // tslint:disable-next-line:no-var-requires variable-name
+    private HatDatabase: { [key: string]: HatDescriptor } = {};
 
     /**
      * Constructs a new instance of this class.
@@ -60,11 +53,11 @@ export default class WearAHat {
             // e.g. ws://10.0.1.89:3901?kit=city_helmets
             switch(this.params.kit) {
                 case "city_helmets": {
-                    HatDatabase = Object.assign({}, require('../public/1167643861778956427_city_helmets.json'), require('../public/defaults.json'));
+                    this.HatDatabase = Object.assign({}, require('../public/1167643861778956427_city_helmets.json'), require('../public/defaults.json'));
                     break;
                 }
                 default: {
-                    HatDatabase = Object.assign({}, require('../public/1166467957212054271_space_helmets.json'), require('../public/defaults.json'));
+                    this.HatDatabase = Object.assign({}, require('../public/1166467957212054271_space_helmets.json'), require('../public/defaults.json'));
                     break;
                 }
             }
@@ -102,8 +95,8 @@ export default class WearAHat {
         let x = 0;
 
         // Loop over the hat database, creating a menu item for each entry.
-        for (const hatId of Object.keys(HatDatabase)) {
-            const hatRecord = HatDatabase[hatId];
+        for (const hatId of Object.keys(this.HatDatabase)) {
+            const hatRecord = this.HatDatabase[hatId];
 
             // Create a clickable button.
             var button;
@@ -209,7 +202,7 @@ export default class WearAHat {
         if (this.attachedHats[userId]) this.attachedHats[userId].destroy();
         delete this.attachedHats[userId];
 
-        const hatRecord = HatDatabase[hatId];
+        const hatRecord = this.HatDatabase[hatId];
 
         // Create the hat model and attach it to the avatar's head.
         // Jimmy
