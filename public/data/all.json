@@ -58,6 +58,18 @@
             "z": 0
         }
     },
+    "alien": {
+        "resourceId": "artifact:1168002881056408154"
+    },
+    "robotfemale": {
+        "resourceId": "artifact:1168002875897414233"
+    },
+    "malehelmet": {
+        "resourceId": "artifact:1168002870503539258"
+    },
+    "femalehelmet": {
+        "resourceId": "artifact:1168002886525780571"
+    },
     "businessman": {
         "resourceId": "artifact:1167890491962818802"
     },
