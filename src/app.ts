@@ -57,14 +57,15 @@ export default class WearAHat {
         // Hook the context events we're interested in.
         this.context.onStarted(() => {
             // Choose the set of helmets
+            // defaults include actions like Clear, Move Up/Down, and Size Up/Down
             // e.g. ws://10.0.1.89:3901?kit=city_helmets
             switch(this.params.kit) {
                 case "city_helmets": {
-                    HatDatabase = require('../public/1167643861778956427_city_helmets');
+                    HatDatabase = Object.assign({}, require('../public/1167643861778956427_city_helmets.json'), require('../public/defaults.json'));
                     break;
                 }
                 default: {
-                    HatDatabase = require('../public/1166467957212054271_space_helmets.json');
+                    HatDatabase = Object.assign({}, require('../public/1166467957212054271_space_helmets.json'), require('../public/defaults.json'));
                     break;
                 }
             }
@@ -109,7 +110,9 @@ export default class WearAHat {
             var button;
 
             if (hatRecord.resourceId) {
-                const rotation = hatId == "movedown" ? hatRecord.rotation : { x: 0, y: 0, z: 0 }
+                let regex: RegExp = /^(move|size)(up|down)/;
+                const rotation = regex.test(hatId) ? hatRecord.rotation : { x: 0, y: 0, z: 0 }
+                const scale = regex.test(hatId) ? hatRecord.scale : { x: 3, y: 3, z: 3 }
 
                 // Create a clickable Artifact
                 button = MRESDK.Actor.CreateFromLibrary(this.context, {
@@ -121,7 +124,7 @@ export default class WearAHat {
                                 rotation.x * MRESDK.DegreesToRadians,
                                 rotation.y * MRESDK.DegreesToRadians,
                                 rotation.z * MRESDK.DegreesToRadians),
-                            scale: { x: 3, y: 3, z: 3 }
+                            scale: scale
                         }
                     }
                 });

@@ -70,30 +70,5 @@
             "y": 0.13,
             "z": 0
         }
-    },
-    "clear": {
-        "displayName": "! Clear",
-        "resourceId": "artifact:1150513214480450500"
-    },
-    "moveup": {
-        "displayName": "! Move Up 0.01",
-        "resourceId": "artifact:1150513195203429312"
-    },
-    "movedown": {
-        "displayName": "! Move Down 0.01",
-        "resourceId": "artifact:1150513195203429312",
-        "rotation": {
-            "x": 0,
-            "y": 0,
-            "z": 180
-        }
-    },
-    "sizeup": {
-        "displayName": "! Size Up 0.01",
-        "resourceId": "artifact:1150512974809530824"
-    },
-    "sizedown": {
-        "displayName": "! Size Down 0.01",
-        "resourceId": "artifact:1150512610458730762"
     }
 }
