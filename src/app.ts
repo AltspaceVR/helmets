@@ -53,11 +53,15 @@ export default class WearAHat {
             // e.g. ws://10.0.1.89:3901?kit=city_helmets
             switch(this.params.kit) {
                 case "city_helmets": {
-                    this.HatDatabase = Object.assign({}, require('../public/1167643861778956427_city_helmets.json'), require('../public/defaults.json'));
+                    this.HatDatabase = Object.assign({}, require('../public/data/1167643861778956427_city_helmets.json'), require('../public/defaults.json'));
                     break;
                 }
-                default: {
-                    this.HatDatabase = Object.assign({}, require('../public/1166467957212054271_space_helmets.json'), require('../public/defaults.json'));
+                case "space_helmets": {
+                    this.HatDatabase = Object.assign({}, require('../public/data/1166467957212054271_space_helmets.json'), require('../public/defaults.json'));
+                    break;
+                }
+                default: { // all - manually combined
+                    this.HatDatabase = Object.assign({}, require('../public/data/all.json'), require('../public/defaults.json'));
                     break;
                 }
             }

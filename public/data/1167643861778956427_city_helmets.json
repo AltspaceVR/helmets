@@ -1,0 +1,26 @@
+{
+    "businessman": {
+        "resourceId": "artifact:1167890491962818802"
+    },
+    "businesswoman": {
+        "resourceId": "artifact:1167890476561334511"
+    },
+    "femalecoat": {
+        "resourceId": "artifact:1167890502222086388"
+    },
+    "femalejacket": {
+        "resourceId": "artifact:1167890497188921587"
+    },
+    "femalepolice": {
+        "resourceId": "artifact:1167890486736716017"
+    },
+    "malehoodie": {
+        "resourceId": "artifact:1167890471578501358"
+    },
+    "malejacket": {
+        "resourceId": "artifact:1167890465857470701"
+    },
+    "malepolice": {
+        "resourceId": "artifact:1167890481678385392"
+    }
+}
