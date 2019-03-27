@@ -1,6 +1,16 @@
 {
     "scount": {
         "resourceId": "artifact:1172249410365555363",
+        "scale": {
+            "x": 2.8,
+            "y": 2.8,
+            "z": 2.8
+        },
+        "position": {
+            "x": 0,
+            "y": -0.04,
+            "z": 0
+        },
         "rotation": {
             "x": 0,
             "y": 180,
