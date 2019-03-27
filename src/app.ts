@@ -64,6 +64,10 @@ export default class WearAHat {
                     this.HatDatabase = Object.assign({}, require('../public/data/1172247038427922799_star_wars_scout_helmet.json'), require('../public/defaults.json'));
                     break;
                 }
+                case "samurai_helmets": {
+                    this.HatDatabase = Object.assign({}, require('../public/data/1172272863143527350_samurai_helmets.json'), require('../public/defaults.json'));
+                    break;
+                }
                 default: { // all - manually combined
                     this.HatDatabase = Object.assign({}, require('../public/data/all.json'), require('../public/defaults.json'));
                     break;

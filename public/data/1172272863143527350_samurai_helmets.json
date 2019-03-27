@@ -1,0 +1,65 @@
+{
+    "geisha00": {
+        "resourceId": "artifact:1172300731936408163"
+    },
+    "geisha01": {
+        "resourceId": "artifact:1172300762814874217"
+    },
+    "geisha02": {
+        "resourceId": "artifact:1172300695538238031"
+    },
+    "grunt00": {
+        "resourceId": "artifact:1172300772889592428"
+    },
+    "grunt01": {
+        "resourceId": "artifact:1172300782335165038"
+    },
+    "grunt02": {
+        "resourceId": "artifact:1172300788005864047"
+    },
+    "ninja00": {
+        "resourceId": "artifact:1172284037591466089"
+    },
+    "ninja01": {
+        "resourceId": "artifact:1172284032541524072"
+    },
+    "ninja02": {
+        "resourceId": "artifact:1172284042591076458"
+    },
+    "sensei00": {
+        "resourceId": "artifact:1172300752538829415"
+    },
+    "sensei01": {
+        "resourceId": "artifact:1172300777461383789"
+    },
+    "sensei02": {
+        "resourceId": "artifact:1172300721727472218"
+    },
+    "villageman00": {
+        "resourceId": "artifact:1172300757555217000"
+    },
+    "villageman01": {
+        "resourceId": "artifact:1172300767965479531"
+    },
+    "villageman02": {
+        "resourceId": "artifact:1172300716534923865"
+    },
+    "villagewoman00": {
+        "resourceId": "artifact:1172300736977961572"
+    },
+    "villagewoman01": {
+        "resourceId": "artifact:1172300726970352224"
+    },
+    "villagewoman02": {
+        "resourceId": "artifact:1172300700990833238"
+    },
+    "warrior00": {
+        "resourceId": "artifact:1172300742355059301"
+    },
+    "warrior01": {
+        "resourceId": "artifact:1172300711384318552"
+    },
+    "warrior02": {
+        "resourceId": "artifact:1172300747589550694"
+    }
+}
