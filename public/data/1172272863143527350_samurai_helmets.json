@@ -9,13 +9,28 @@
         "resourceId": "artifact:1172300695538238031"
     },
     "grunt00": {
-        "resourceId": "artifact:1172300772889592428"
+        "resourceId": "artifact:1172300772889592428",
+        "position": {
+            "x": 0,
+            "y": -0.04,
+            "z": 0
+        }
     },
     "grunt01": {
-        "resourceId": "artifact:1172300782335165038"
+        "resourceId": "artifact:1172300782335165038",
+        "position": {
+            "x": 0,
+            "y": -0.04,
+            "z": 0
+        }
     },
     "grunt02": {
-        "resourceId": "artifact:1172300788005864047"
+        "resourceId": "artifact:1172300788005864047",
+        "position": {
+            "x": 0,
+            "y": -0.04,
+            "z": 0
+        }
     },
     "ninja00": {
         "resourceId": "artifact:1172284037591466089"
@@ -54,12 +69,27 @@
         "resourceId": "artifact:1172300700990833238"
     },
     "warrior00": {
-        "resourceId": "artifact:1172300742355059301"
+        "resourceId": "artifact:1172300742355059301",
+        "position": {
+            "x": 0,
+            "y": 0.15,
+            "z": 0
+        }
     },
     "warrior01": {
-        "resourceId": "artifact:1172300711384318552"
+        "resourceId": "artifact:1172300711384318552",
+        "position": {
+            "x": 0,
+            "y": 0.15,
+            "z": 0
+        }
     },
     "warrior02": {
-        "resourceId": "artifact:1172300747589550694"
+        "resourceId": "artifact:1172300747589550694",
+        "position": {
+            "x": 0,
+            "y": 0.15,
+            "z": 0
+        }
     }
 }
