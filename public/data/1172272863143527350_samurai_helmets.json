@@ -69,27 +69,12 @@
         "resourceId": "artifact:1172300700990833238"
     },
     "warrior00": {
-        "resourceId": "artifact:1172300742355059301",
-        "position": {
-            "x": 0,
-            "y": 0.1,
-            "z": 0
-        }
+        "resourceId": "artifact:1172300742355059301"
     },
     "warrior01": {
-        "resourceId": "artifact:1172300711384318552",
-        "position": {
-            "x": 0,
-            "y": 0.1,
-            "z": 0
-        }
+        "resourceId": "artifact:1172300711384318552"
     },
     "warrior02": {
-        "resourceId": "artifact:1172300747589550694",
-        "position": {
-            "x": 0,
-            "y": 0.1,
-            "z": 0
-        }
+        "resourceId": "artifact:1172300747589550694"
     }
 }
