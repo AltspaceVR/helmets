@@ -1,0 +1,158 @@
+{
+    "daughter01": {
+        "resourceId": "artifact:1173020052463550950",
+        "position": {
+            "x": 0,
+            "y": -0.2,
+            "z": 0
+        }
+    },
+    "daughter04": {
+        "resourceId": "artifact:1173020026173653473",
+        "position": {
+            "x": 0,
+            "y": -0.2,
+            "z": 0
+        }
+    },
+    "daughter05": {
+        "resourceId": "artifact:1173020057614156263",
+        "position": {
+            "x": 0,
+            "y": -0.2,
+            "z": 0
+        }
+    },
+    "daughter06": {
+        "resourceId": "artifact:1173020047203893733",
+        "position": {
+            "x": 0,
+            "y": -0.2,
+            "z": 0
+        }
+    },
+    "daughter07": {
+        "resourceId": "artifact:1173020062647321064",
+        "position": {
+            "x": 0,
+            "y": -0.2,
+            "z": 0
+        }
+    },
+    "daughter09": {
+        "resourceId": "artifact:1173020072705262059",
+        "position": {
+            "x": 0,
+            "y": -0.2,
+            "z": 0
+        }
+    },
+    "father00": {
+        "resourceId": "artifact:1173252168224867113"
+    },
+    "father01": {
+        "resourceId": "artifact:1173252261917229876"
+    },
+    "father02": {
+        "resourceId": "artifact:1173252273745167158"
+    },
+    "father03": {
+        "resourceId": "artifact:1173252249141379891"
+    },
+    "father04": {
+        "resourceId": "artifact:1173252214513206065"
+    },
+    "father05": {
+        "resourceId": "artifact:1173252145886004007"
+    },
+    "father06": {
+        "resourceId": "artifact:1173252235652498226"
+    },
+    "father07": {
+        "resourceId": "artifact:1173252286470685496"
+    },
+    "mother00": {
+        "resourceId": "artifact:1173230033515315462"
+    },
+    "mother01": {
+        "resourceId": "artifact:1173230022702399747"
+    },
+    "mother02": {
+        "resourceId": "artifact:1173230077891051791"
+    },
+    "mother03": {
+        "resourceId": "artifact:1173230000606806270"
+    },
+    "mother04": {
+        "resourceId": "artifact:1173230086413877520"
+    },
+    "mother05": {
+        "resourceId": "artifact:1173230097486840082"
+    },
+    "mother06": {
+        "resourceId": "artifact:1173229969258578167"
+    },
+    "mother07": {
+        "resourceId": "artifact:1173229995397480700"
+    },
+    "schoolboy00": {
+        "resourceId": "artifact:1173230050292531466"
+    },
+    "schoolboy01": {
+        "resourceId": "artifact:1173230102587113747"
+    },
+    "schoolboy02": {
+        "resourceId": "artifact:1173229964074418422"
+    },
+    "schoolboy03": {
+        "resourceId": "artifact:1173229958974144757"
+    },
+    "schoolgirl00": {
+        "resourceId": "artifact:1173230092420120849",
+        "position": {
+            "x": 0,
+            "y": -0.2,
+            "z": 0
+        }
+    },
+    "schoolgirl01": {
+        "resourceId": "artifact:1173230012141142273",
+        "position": {
+            "x": 0,
+            "y": -0.2,
+            "z": 0
+        }
+    },
+    "schoolgirl02": {
+        "resourceId": "artifact:1173229990196543739",
+        "position": {
+            "x": 0,
+            "y": -0.2,
+            "z": 0
+        }
+    },
+    "shopkeeper00": {
+        "resourceId": "artifact:1173229984609730810"
+    },
+    "shopkeeper01": {
+        "resourceId": "artifact:1173230061566820620"
+    },
+    "shopkeeper02": {
+        "resourceId": "artifact:1173230006403334399"
+    },
+    "shopkeeper03": {
+        "resourceId": "artifact:1173229974350463224"
+    },
+    "son00": {
+        "resourceId": "artifact:1173230044521169161"
+    },
+    "son01": {
+        "resourceId": "artifact:1173230066734203149"
+    },
+    "son02": {
+        "resourceId": "artifact:1173230107754496276"
+    },
+    "son03": {
+        "resourceId": "artifact:1173230072396513550"
+    }
+}

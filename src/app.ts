@@ -68,6 +68,10 @@ export default class WearAHat {
                     this.HatDatabase = Object.assign({}, require('../public/data/1172272863143527350_samurai_helmets.json'), require('../public/defaults.json'));
                     break;
                 }
+                case "town_helmets": {
+                    this.HatDatabase = Object.assign({}, require('../public/data/1172957249807582137_town_helmets.json'), require('../public/defaults.json'));
+                    break;
+                }
                 default: { // all - manually combined
                     this.HatDatabase = Object.assign({}, require('../public/data/all.json'), require('../public/defaults.json'));
                     break;
@@ -118,65 +122,44 @@ export default class WearAHat {
             const rotation = (regex.test(hatId) && hatRecord.rotation) ? hatRecord.rotation : { x: 0, y: 0, z: 0 }
             const scale = (regex.test(hatId) && hatRecord.scale) ? hatRecord.scale : { x: 3, y: 3, z: 3 }
 
-            if (regex.test(hatId)){
-                // Create clickable command Artifact
-                button = MRESDK.Actor.CreateFromLibrary(this.context, {
-                    resourceId: hatRecord.resourceId,
-                    actor: {
-                        transform: {
-                            position: { x, y: 1, z: 0 },
-                            rotation: MRESDK.Quaternion.FromEulerAngles(
-                                rotation.x * MRESDK.DegreesToRadians,
-                                rotation.y * MRESDK.DegreesToRadians,
-                                rotation.z * MRESDK.DegreesToRadians),
-                            scale: scale
-                        }
+            // Create a Artifact without a collider
+            MRESDK.Actor.CreateFromLibrary(this.context, {
+                resourceId: hatRecord.resourceId,
+                actor: {
+                    transform: {
+                        position: { x, y: 1, z: 0 },
+                        rotation: MRESDK.Quaternion.FromEulerAngles(
+                            rotation.x * MRESDK.DegreesToRadians,
+                            rotation.y * MRESDK.DegreesToRadians,
+                            rotation.z * MRESDK.DegreesToRadians),
+                        scale: scale
                     }
-                });
+                }
+            });
 
-                // Set a click handler on the button.
-                button.value.setBehavior(MRESDK.ButtonBehavior)
-                    .onClick('released', (userId: string) => this.wearHat(hatId, userId));
-            } else {
-                // Create a Artifact without a collider
-                MRESDK.Actor.CreateFromLibrary(this.context, {
-                    resourceId: hatRecord.resourceId,
-                    actor: {
-                        transform: {
-                            position: { x, y: 1, z: 0 },
-                            rotation: MRESDK.Quaternion.FromEulerAngles(
-                                rotation.x * MRESDK.DegreesToRadians,
-                                rotation.y * MRESDK.DegreesToRadians,
-                                rotation.z * MRESDK.DegreesToRadians),
-                            scale: scale
-                        }
-                    }
-                });
-
-                // Creaet an invisible cube with a collider
-                button = MRESDK.Actor.CreatePrimitive(this.context, {
-                    definition: {
-                        shape: MRESDK.PrimitiveShape.Box,
-                        dimensions: { x: 0.3, y: 0.3, z: 0.3 }
+            // Creaet an invisible cube with a collider
+            button = MRESDK.Actor.CreatePrimitive(this.context, {
+                definition: {
+                    shape: MRESDK.PrimitiveShape.Box,
+                    dimensions: { x: 0.4, y: 0.4, z: 0.4 } // make sure there's a gap
+                },
+                addCollider: true,
+                actor: {
+                    parentId: menu.id,
+                    name: hatId,
+                    transform: {
+                        position: { x, y: 1, z: 0 },
+                        scale: scale
                     },
-                    addCollider: true,
-                    actor: {
-                        parentId: menu.id,
-                        name: hatId,
-                        transform: {
-                            position: { x, y: 1, z: 0 },
-                            scale: scale
-                        },
-                        appearance: {
-                            enabled: false
-                        }
+                    appearance: {
+                        enabled: false
                     }
-                });
+                }
+            });
 
-                // Set a click handler on the button.
-                button.value.setBehavior(MRESDK.ButtonBehavior)
-                    .onClick('released', (userId: string) => this.wearHat(hatId, userId));
-            }
+            // Set a click handler on the button.
+            button.value.setBehavior(MRESDK.ButtonBehavior)
+                .onClick('released', (userId: string) => this.wearHat(hatId, userId));
 
             x += 1.5;
         }
@@ -196,23 +179,29 @@ export default class WearAHat {
             return;
         }
         else if (hatId == "moveup!") {
-            this.attachedHats[userId].transform.position.y += 0.01;
+            if (this.attachedHats[userId])
+                this.attachedHats[userId].transform.position.y += 0.01;
             return;
         }
         else if (hatId == "movedown!") {
-            this.attachedHats[userId].transform.position.y -= 0.01;
+            if (this.attachedHats[userId])
+                this.attachedHats[userId].transform.position.y -= 0.01;
             return;
         }
         else if (hatId == "sizeup!") {
-            this.attachedHats[userId].transform.scale.x += 0.01;
-            this.attachedHats[userId].transform.scale.y += 0.01;
-            this.attachedHats[userId].transform.scale.z += 0.01;
+            if (this.attachedHats[userId]){
+                this.attachedHats[userId].transform.scale.x += 0.02;
+                this.attachedHats[userId].transform.scale.y += 0.02;
+                this.attachedHats[userId].transform.scale.z += 0.02;
+            }
             return;
         }
         else if (hatId == "sizedown!") {
-            this.attachedHats[userId].transform.scale.x -= 0.01;
-            this.attachedHats[userId].transform.scale.y -= 0.01;
-            this.attachedHats[userId].transform.scale.z -= 0.01;
+            if (this.attachedHats[userId]){
+                this.attachedHats[userId].transform.scale.x -= 0.02;
+                this.attachedHats[userId].transform.scale.y -= 0.02;
+                this.attachedHats[userId].transform.scale.z -= 0.02;
+            }
             return;
         }
 
