@@ -113,13 +113,13 @@ export default class WearAHat {
             // Create a clickable button.
             var button;
 
-            if (hatRecord.resourceId) {
-                // special scaling and rotation for commands
-                let regex: RegExp = /!$/; // e.g. clear!
-                const rotation = (regex.test(hatId) && hatRecord.rotation) ? hatRecord.rotation : { x: 0, y: 0, z: 0 }
-                const scale = (regex.test(hatId) && hatRecord.scale) ? hatRecord.scale : { x: 3, y: 3, z: 3 }
+            // special scaling and rotation for commands
+            let regex: RegExp = /!$/; // e.g. clear!
+            const rotation = (regex.test(hatId) && hatRecord.rotation) ? hatRecord.rotation : { x: 0, y: 0, z: 0 }
+            const scale = (regex.test(hatId) && hatRecord.scale) ? hatRecord.scale : { x: 3, y: 3, z: 3 }
 
-                // Create a clickable Artifact
+            if (regex.test(hatId)){
+                // Create clickable command Artifact
                 button = MRESDK.Actor.CreateFromLibrary(this.context, {
                     resourceId: hatRecord.resourceId,
                     actor: {
@@ -133,8 +133,27 @@ export default class WearAHat {
                         }
                     }
                 });
-            }
-            else {
+
+                // Set a click handler on the button.
+                button.value.setBehavior(MRESDK.ButtonBehavior)
+                    .onClick('released', (userId: string) => this.wearHat(hatId, userId));
+            } else {
+                // Create a Artifact without a collider
+                MRESDK.Actor.CreateFromLibrary(this.context, {
+                    resourceId: hatRecord.resourceId,
+                    actor: {
+                        transform: {
+                            position: { x, y: 1, z: 0 },
+                            rotation: MRESDK.Quaternion.FromEulerAngles(
+                                rotation.x * MRESDK.DegreesToRadians,
+                                rotation.y * MRESDK.DegreesToRadians,
+                                rotation.z * MRESDK.DegreesToRadians),
+                            scale: scale
+                        }
+                    }
+                });
+
+                // Creaet an invisible cube with a collider
                 button = MRESDK.Actor.CreatePrimitive(this.context, {
                     definition: {
                         shape: MRESDK.PrimitiveShape.Box,
@@ -145,32 +164,19 @@ export default class WearAHat {
                         parentId: menu.id,
                         name: hatId,
                         transform: {
-                            position: { x, y: 0, z: 0 }
+                            position: { x, y: 1, z: 0 },
+                            scale: scale
+                        },
+                        appearance: {
+                            enabled: false
                         }
                     }
                 });
 
-                // // Create a label for the menu entry.
-                // MRESDK.Actor.CreateEmpty(this.context, {
-                //     actor: {
-                //         parentId: menu.id,
-                //         name: 'label',
-                //         text: {
-                //             contents: HatDatabase[hatId].displayName,
-                //             height: 0.5,
-                //             anchor: MRESDK.TextAnchorLocation.MiddleLeft
-                //         },
-                //         transform: {
-                //             position: { x, y: 0, z: 0 }
-                //         }
-                //     }
-                // });
+                // Set a click handler on the button.
+                button.value.setBehavior(MRESDK.ButtonBehavior)
+                    .onClick('released', (userId: string) => this.wearHat(hatId, userId));
             }
-
-
-            // Set a click handler on the button.
-            button.value.setBehavior(MRESDK.ButtonBehavior)
-                .onClick('released', (userId: string) => this.wearHat(hatId, userId));
 
             x += 1.5;
         }
