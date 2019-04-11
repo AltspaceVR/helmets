@@ -46,5 +46,19 @@
             "z": 0
         },
         "attachPoint": "spine-middle"
+    },
+    "type6shuttle": {
+        "resourceId": "artifact:1164178548886340183",
+        "scale": {
+            "x": 7.5,
+            "y": 7.5,
+            "z": 7.5
+        },
+        "position": {
+            "x": 0,
+            "y": -0.48,
+            "z": 0
+        },
+        "attachPoint": "spine-middle"
     }
 }
