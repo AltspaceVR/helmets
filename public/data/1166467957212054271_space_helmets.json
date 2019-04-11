@@ -9,7 +9,17 @@
         "resourceId": "artifact:1166596359604666470"
     },
     "spacehelmet": {
-        "resourceId": "artifact:1166530075533771277"
+        "resourceId": "artifact:1166530075533771277",
+        "scale": {
+            "x": 1.3,
+            "y": 1.3,
+            "z": 1.3
+        },
+        "position": {
+            "x": 0,
+            "y": -0.04,
+            "z": 0
+        }
     },
     "hunterfemale": {
         "resourceId": "artifact:1166573948893135616"
@@ -28,19 +38,6 @@
     },
     "psionic": {
         "resourceId": "artifact:1166573953859191673"
-    },
-    "spacehelmet": {
-        "resourceId": "artifact:1166530075533771277",
-        "scale": {
-            "x": 1.3,
-            "y": 1.3,
-            "z": 1.3
-        },
-        "position": {
-            "x": 0,
-            "y": -0.04,
-            "z": 0
-        }
     },
     "spacesoldiermale": {
         "resourceId": "artifact:1166469656223940751"
