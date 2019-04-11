@@ -61,7 +61,7 @@
         },
         "position": {
             "x": 0,
-            "y": -0.4,
+            "y": 0.2,
             "z": 0
         },
         "attachPoint": "spine-middle"
