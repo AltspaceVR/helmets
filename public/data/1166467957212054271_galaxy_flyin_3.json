@@ -3,17 +3,7 @@
         "resourceId": "artifact:1166530080650822158"
     },
     "spacehelmet": {
-        "resourceId": "artifact:1166530075533771277",
-        "scale": {
-            "x": 7.5,
-            "y": 7.5,
-            "z": 7.5
-        },
-        "position": {
-            "x": 0,
-            "y": -0.2,
-            "z": 0
-        }
+        "resourceId": "artifact:1166530075533771277"
     },
     "psionic": {
         "resourceId": "artifact:1166573953859191673"
@@ -42,5 +32,18 @@
     },
     "femalehelmet": {
         "resourceId": "artifact:1168002886525780571"
-    }
+    },
+    "spacehelmetship": {
+        "resourceId": "artifact:1166530075533771277",
+        "scale": {
+            "x": 7.5,
+            "y": 7.5,
+            "z": 7.5
+        },
+        "position": {
+            "x": 0,
+            "y": -0.48,
+            "z": 0
+        }
+    },
 }
