@@ -44,6 +44,7 @@
             "x": 0,
             "y": -0.48,
             "z": 0
-        }
+        },
+        "attachPoint": "spine-middle"
     }
 }
