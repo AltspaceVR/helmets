@@ -50,13 +50,18 @@
     "type6shuttle": {
         "resourceId": "artifact:1164178548886340183",
         "scale": {
-            "x": 7.5,
-            "y": 7.5,
-            "z": 7.5
+            "x": 1,
+            "y": 1,
+            "z": 1
+        },
+        "rotation": {
+            "x": 0,
+            "y": 90,
+            "z": 0
         },
         "position": {
             "x": 0,
-            "y": -0.48,
+            "y": 0,
             "z": 0
         },
         "attachPoint": "spine-middle"
