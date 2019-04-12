@@ -77,6 +77,10 @@ export default class WearAHat {
                     this.HatDatabase = Object.assign({}, require('../public/data/1172957249807582137_town_helmets.json'), require('../public/defaults.json'));
                     break;
                 }
+                case "viking_helmets": {
+                    this.HatDatabase = Object.assign({}, require('../public/data/1184323616783729170_viking_helmets.json'), require('../public/defaults.json'));
+                    break;
+                }
                 default: { // all - manually combined
                     this.HatDatabase = Object.assign({}, require('../public/data/all.json'), require('../public/defaults.json'));
                     break;
