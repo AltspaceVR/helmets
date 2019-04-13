@@ -27,7 +27,12 @@
         "resourceId": "artifact:1184357321313092013"
     },
     "horns": {
-        "resourceId": "artifact:1184357310550507946"
+        "resourceId": "artifact:1184357310550507946",
+        "position": {
+            "x": 0,
+            "y": 0.2,
+            "z": 0
+        }
     },
     "shieldmaiden00": {
         "resourceId": "artifact:1184326184838628330"
