@@ -197,6 +197,16 @@ export default class WearAHat {
                 this.attachedHats[userId].transform.position.y -= 0.01;
             return;
         }
+        else if (hatId == "moveforward!") {
+            if (this.attachedHats[userId])
+                this.attachedHats[userId].transform.position.z += 0.01;
+            return;
+        }
+        else if (hatId == "moveback!") {
+            if (this.attachedHats[userId])
+                this.attachedHats[userId].transform.position.z -= 0.01;
+            return;
+        }
         else if (hatId == "sizeup!") {
             if (this.attachedHats[userId]){
                 this.attachedHats[userId].transform.scale.x += 0.02;

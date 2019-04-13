@@ -43,5 +43,31 @@
             "y": 2,
             "z": 2
         }
+    },
+    "moveforward!": {
+        "resourceId": "artifact:1150513195203429312",
+        "scale": {
+            "x": 4,
+            "y": 4,
+            "z": 4
+        },
+        "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 90
+        }
+    },
+    "moveback!": {
+        "resourceId": "artifact:1150513195203429312",
+        "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 270
+        },
+        "scale": {
+            "x": 4,
+            "y": 4,
+            "z": 4
+        }
     }
 }
