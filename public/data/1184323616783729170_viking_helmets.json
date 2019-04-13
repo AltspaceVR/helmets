@@ -1,4 +1,34 @@
 {
+    "chief00": {
+        "resourceId": "artifact:1184357289067282853"
+    },
+    "chief01": {
+        "resourceId": "artifact:1184357299821478312"
+    },
+    "chief02": {
+        "resourceId": "artifact:1184357315332014507"
+    },
+    "grunt00": {
+        "resourceId": "artifact:1184357272071963040"
+    },
+    "grunt01": {
+        "resourceId": "artifact:1184357256376877464"
+    },
+    "grunt02": {
+        "resourceId": "artifact:1184357332411220400"
+    },
+    "grunt03": {
+        "resourceId": "artifact:1184357251234660759"
+    },
+    "grunt04": {
+        "resourceId": "artifact:1184357261753975193"
+    },
+    "grunt05": {
+        "resourceId": "artifact:1184357321313092013"
+    },
+    "horns": {
+        "resourceId": "artifact:1184357310550507946"
+    },
     "shieldmaiden00": {
         "resourceId": "artifact:1184326184838628330"
     },
@@ -7,5 +37,23 @@
     },
     "shieldmaiden02": {
         "resourceId": "artifact:1184326190198948844"
+    },
+    "warrior00": {
+        "resourceId": "artifact:1184357283178480036"
+    },
+    "warrior01": {
+        "resourceId": "artifact:1184357305425068457"
+    },
+    "warrior02": {
+        "resourceId": "artifact:1184357267038798238"
+    },
+    "warrior03": {
+        "resourceId": "artifact:1184357294570209702"
+    },
+    "warrior04": {
+        "resourceId": "artifact:1184357277482615201"
+    },
+    "warrior05": {
+        "resourceId": "artifact:1184357327134785967"
     }
 }
