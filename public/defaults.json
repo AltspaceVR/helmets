@@ -52,17 +52,17 @@
             "z": 4
         },
         "rotation": {
-            "x": 0,
+            "x": 90,
             "y": 0,
-            "z": 90
+            "z": 0
         }
     },
     "moveback!": {
         "resourceId": "artifact:1150513195203429312",
         "rotation": {
-            "x": 0,
+            "x": 270,
             "y": 0,
-            "z": 270
+            "z": 0
         },
         "scale": {
             "x": 4,
