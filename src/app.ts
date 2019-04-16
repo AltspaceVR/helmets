@@ -136,12 +136,14 @@ export default class WearAHat {
                 resourceId: hatRecord.resourceId,
                 actor: {
                     transform: {
-                        position: { x, y: 1, z: 0 },
-                        rotation: MRESDK.Quaternion.FromEulerAngles(
-                            rotation.x * MRESDK.DegreesToRadians,
-                            rotation.y * MRESDK.DegreesToRadians,
-                            rotation.z * MRESDK.DegreesToRadians),
-                        scale: scale
+                        local: {
+                            position: { x, y: 1, z: 0 },
+                            rotation: MRESDK.Quaternion.FromEulerAngles(
+                                rotation.x * MRESDK.DegreesToRadians,
+                                rotation.y * MRESDK.DegreesToRadians,
+                                rotation.z * MRESDK.DegreesToRadians),
+                            scale: scale
+                        }
                     }
                 }
             });
@@ -157,8 +159,10 @@ export default class WearAHat {
                     parentId: menu.id,
                     name: hatId,
                     transform: {
-                        position: { x, y: 1, z: 0 },
-                        scale: scale
+                        local: {
+                            position: { x, y: 1, z: 0 },
+                            scale: scale
+                        }
                     },
                     appearance: {
                         enabled: false
@@ -168,7 +172,7 @@ export default class WearAHat {
 
             // Set a click handler on the button.
             button.value.setBehavior(MRESDK.ButtonBehavior)
-                .onClick('released', (userId: string) => this.wearHat(hatId, userId));
+                .onClick('released', (user) => this.wearHat(hatId, user.id));
 
             x += 1.5;
         }
@@ -189,37 +193,37 @@ export default class WearAHat {
         }
         else if (hatId == "moveup!") {
             if (this.attachedHats[userId])
-                this.attachedHats[userId].transform.position.y += 0.01;
+                this.attachedHats[userId].transform.local.position.y += 0.01;
             return;
         }
         else if (hatId == "movedown!") {
             if (this.attachedHats[userId])
-                this.attachedHats[userId].transform.position.y -= 0.01;
+                this.attachedHats[userId].transform.local.position.y -= 0.01;
             return;
         }
         else if (hatId == "moveforward!") {
             if (this.attachedHats[userId])
-                this.attachedHats[userId].transform.position.z += 0.01;
+                this.attachedHats[userId].transform.local.position.z += 0.01;
             return;
         }
         else if (hatId == "moveback!") {
             if (this.attachedHats[userId])
-                this.attachedHats[userId].transform.position.z -= 0.01;
+                this.attachedHats[userId].transform.local.position.z -= 0.01;
             return;
         }
         else if (hatId == "sizeup!") {
             if (this.attachedHats[userId]){
-                this.attachedHats[userId].transform.scale.x += 0.02;
-                this.attachedHats[userId].transform.scale.y += 0.02;
-                this.attachedHats[userId].transform.scale.z += 0.02;
+                this.attachedHats[userId].transform.local.scale.x += 0.02;
+                this.attachedHats[userId].transform.local.scale.y += 0.02;
+                this.attachedHats[userId].transform.local.scale.z += 0.02;
             }
             return;
         }
         else if (hatId == "sizedown!") {
             if (this.attachedHats[userId]){
-                this.attachedHats[userId].transform.scale.x -= 0.02;
-                this.attachedHats[userId].transform.scale.y -= 0.02;
-                this.attachedHats[userId].transform.scale.z -= 0.02;
+                this.attachedHats[userId].transform.local.scale.x -= 0.02;
+                this.attachedHats[userId].transform.local.scale.y -= 0.02;
+                this.attachedHats[userId].transform.local.scale.z -= 0.02;
             }
             return;
         }
@@ -242,12 +246,14 @@ export default class WearAHat {
             resourceId: hatRecord.resourceId,
             actor: {
                 transform: {
-                    position: position,
-                    rotation: MRESDK.Quaternion.FromEulerAngles(
-                        rotation.x * MRESDK.DegreesToRadians,
-                        rotation.y * MRESDK.DegreesToRadians,
-                        rotation.z * MRESDK.DegreesToRadians),
-                    scale: scale
+                    local: {
+                        position: position,
+                        rotation: MRESDK.Quaternion.FromEulerAngles(
+                            rotation.x * MRESDK.DegreesToRadians,
+                            rotation.y * MRESDK.DegreesToRadians,
+                            rotation.z * MRESDK.DegreesToRadians),
+                        scale: scale
+                    }
                 },
                 attachment: {
                     attachPoint: attachPoint,
