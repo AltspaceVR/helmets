@@ -28,11 +28,13 @@
     "postinstall": "npm run build"
   },
   "devDependencies": {
+    "@types/dotenv": "^6.1.1",
     "tslint": "5.11.0",
     "typescript": "3.0.3"
   },
   "dependencies": {
     "@microsoft/mixed-reality-extension-sdk": "^0.9.0",
-    "@types/node": "^10.3.1"
+    "@types/node": "^10.3.1",
+    "dotenv": "^7.0.0"
   }
 }
