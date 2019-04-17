@@ -49,41 +49,50 @@ export default class WearAHat {
     constructor(private context: MRESDK.Context, private params: MRESDK.ParameterSet, private baseUrl: string) {
         // Hook the context events we're interested in.
         this.context.onStarted(() => {
-            // Choose the set of helmets
-            // defaults include actions like Clear, Move Up/Down, and Size Up/Down
-            // e.g. ws://10.0.1.89:3901?kit=city_helmets
-            switch(this.params.kit) {
-                case "city_helmets": {
-                    this.HatDatabase = Object.assign({}, require('../public/data/1167643861778956427_city_helmets.json'), require('../public/defaults.json'));
-                    break;
-                }
-                case "space_helmets": {
-                    this.HatDatabase = Object.assign({}, require('../public/data/1166467957212054271_space_helmets.json'), require('../public/defaults.json'));
-                    break;
-                }
-                case "galaxy_flyin_3": {
-                    this.HatDatabase = Object.assign({}, require('../public/data/1166467957212054271_galaxy_flyin_3.json'), require('../public/defaults.json'));
-                    break;
-                }
-                case "star_wars_scout_helmet": {
-                    this.HatDatabase = Object.assign({}, require('../public/data/1172247038427922799_star_wars_scout_helmet.json'), require('../public/defaults.json'));
-                    break;
-                }
-                case "samurai_helmets": {
-                    this.HatDatabase = Object.assign({}, require('../public/data/1172272863143527350_samurai_helmets.json'), require('../public/defaults.json'));
-                    break;
-                }
-                case "town_helmets": {
-                    this.HatDatabase = Object.assign({}, require('../public/data/1172957249807582137_town_helmets.json'), require('../public/defaults.json'));
-                    break;
-                }
-                case "viking_helmets": {
-                    this.HatDatabase = Object.assign({}, require('../public/data/1184323616783729170_viking_helmets.json'), require('../public/defaults.json'));
-                    break;
-                }
-                default: { // all - manually combined
-                    this.HatDatabase = Object.assign({}, require('../public/data/all.json'), require('../public/defaults.json'));
-                    break;
+
+            if(this.params.content_pack){
+                // Specify a url to a JSON file
+                // https://account.altvr.com/content_packs/1187493048011980938
+                // e.g. ws://10.0.1.89:3901?content_pack=1187493048011980938
+                this.HatDatabase = Object.assign({}, require('https://account.altvr.com/api/content_packs/' + this.params.content_pack + '/raw'), require('../public/defaults.json'));
+            }
+            else {
+                // Choose the set of helmets
+                // defaults include actions like Clear, Move Up/Down, and Size Up/Down
+                // e.g. ws://10.0.1.89:3901?kit=city_helmets
+                switch(this.params.kit) {
+                    case "city_helmets": {
+                        this.HatDatabase = Object.assign({}, require('../public/data/1167643861778956427_city_helmets.json'), require('../public/defaults.json'));
+                        break;
+                    }
+                    case "space_helmets": {
+                        this.HatDatabase = Object.assign({}, require('../public/data/1166467957212054271_space_helmets.json'), require('../public/defaults.json'));
+                        break;
+                    }
+                    case "galaxy_flyin_3": {
+                        this.HatDatabase = Object.assign({}, require('../public/data/1166467957212054271_galaxy_flyin_3.json'), require('../public/defaults.json'));
+                        break;
+                    }
+                    case "star_wars_scout_helmet": {
+                        this.HatDatabase = Object.assign({}, require('../public/data/1172247038427922799_star_wars_scout_helmet.json'), require('../public/defaults.json'));
+                        break;
+                    }
+                    case "samurai_helmets": {
+                        this.HatDatabase = Object.assign({}, require('../public/data/1172272863143527350_samurai_helmets.json'), require('../public/defaults.json'));
+                        break;
+                    }
+                    case "town_helmets": {
+                        this.HatDatabase = Object.assign({}, require('../public/data/1172957249807582137_town_helmets.json'), require('../public/defaults.json'));
+                        break;
+                    }
+                    case "viking_helmets": {
+                        this.HatDatabase = Object.assign({}, require('../public/data/1184323616783729170_viking_helmets.json'), require('../public/defaults.json'));
+                        break;
+                    }
+                    default: { // all - manually combined
+                        this.HatDatabase = Object.assign({}, require('../public/data/all.json'), require('../public/defaults.json'));
+                        break;
+                    }
                 }
             }
 
