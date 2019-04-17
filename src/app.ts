@@ -5,6 +5,8 @@
 
 import * as MRESDK from '@microsoft/mixed-reality-extension-sdk';
 
+const fetch = require('node-fetch');
+
 /**
  * The structure of a hat entry in the hat database.
  */
@@ -54,7 +56,11 @@ export default class WearAHat {
                 // Specify a url to a JSON file
                 // https://account.altvr.com/content_packs/1187493048011980938
                 // e.g. ws://10.0.1.89:3901?content_pack=1187493048011980938
-                this.HatDatabase = Object.assign({}, require('https://account.altvr.com/api/content_packs/' + this.params.content_pack + '/raw'), require('../public/defaults.json'));
+
+                fetch('https://account.altvr.com/api/content_packs/1187493048011980938/raw.json')
+                    .then((res: any) => res.json())
+                    .then((json: any) => this.populateDatabase(json));
+                // this.started() is called in populateDatabase
             }
             else {
                 // Choose the set of helmets
@@ -94,11 +100,22 @@ export default class WearAHat {
                         break;
                     }
                 }
+                this.started();
             }
 
-            this.started();
+
         });
         this.context.onUserLeft(user => this.userLeft(user));
+    }
+
+    private populateDatabase(json: any) {
+        for (var k in json) {
+            this.HatDatabase["malehelmet"] = json[k]
+        }
+        // console.log(this.HatDatabase);
+
+        // call this here for timing purposes
+        this.started();
     }
 
     /**
