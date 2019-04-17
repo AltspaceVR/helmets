@@ -57,7 +57,7 @@ export default class WearAHat {
                 // https://account.altvr.com/content_packs/1187493048011980938
                 // e.g. ws://10.0.1.89:3901?content_pack=1187493048011980938
 
-                fetch('https://account.altvr.com/api/content_packs/1187493048011980938/raw.json')
+                fetch('https://account.altvr.com/api/content_packs/' + this.params.content_pack + '/raw.json')
                     .then((res: any) => res.json())
                     .then((json: any) => {
                         this.HatDatabase = Object.assign({}, json, require('../public/defaults.json'));;
