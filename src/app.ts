@@ -59,9 +59,11 @@ export default class WearAHat {
 
                 fetch('https://account.altvr.com/api/content_packs/1187493048011980938/raw.json')
                     .then((res: any) => res.json())
-                    .then((json: any) => this.populateDatabase(json));
-                // this.started() is called in populateDatabase
-            }
+                    .then((json: any) => {
+                        this.HatDatabase = Object.assign({}, json, require('../public/defaults.json'));;
+                        this.started();
+                    })
+           }
             else {
                 // Choose the set of helmets
                 // defaults include actions like Clear, Move Up/Down, and Size Up/Down
@@ -106,16 +108,6 @@ export default class WearAHat {
 
         });
         this.context.onUserLeft(user => this.userLeft(user));
-    }
-
-    private populateDatabase(json: any) {
-        for (var k in json) {
-            this.HatDatabase["malehelmet"] = json[k]
-        }
-        // console.log(this.HatDatabase);
-
-        // call this here for timing purposes
-        this.started();
     }
 
     /**
