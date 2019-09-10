@@ -34,8 +34,6 @@ type HatDescriptor = {
  * WearAHat Application - Showcasing avatar attachments.
  */
 export default class WearAHat {
-    // Container for preloaded hat prefabs.
-    private prefabs: { [key: string]: MRESDK.AssetGroup } = {};
     // Container for instantiated hats.
     private attachedHats: { [key: string]: MRESDK.Actor } = {};
 
@@ -134,7 +132,7 @@ export default class WearAHat {
      */
     private showHatMenu() {
         // Create a parent object for all the menu items.
-        const menu = MRESDK.Actor.CreateEmpty(this.context).value;
+        const menu = MRESDK.Actor.CreateEmpty(this.context);
         let x = 0;
 
         // Loop over the hat database, creating a menu item for each entry.
@@ -189,8 +187,7 @@ export default class WearAHat {
             });
 
             // Set a click handler on the button.
-            button.value.setBehavior(MRESDK.ButtonBehavior)
-                .onClick('released', (user) => this.wearHat(hatId, user.id));
+            button.setBehavior(MRESDK.ButtonBehavior).onClick(user => this.wearHat(hatId, user.id));
 
             x += 1.5;
         }
@@ -278,25 +275,6 @@ export default class WearAHat {
                     userId
                 }
             }
-        }).value;
-
-
-        // this.attachedHats[userId] = MRESDK.Actor.CreateFromPrefab(this.context, {
-        //     prefabId: this.prefabs[hatId].prefabs.byIndex(0).id,
-        //     actor: {
-        //         transform: {
-        //             position: hatRecord.position,
-        //             rotation: MRESDK.Quaternion.FromEulerAngles(
-        //                 hatRecord.rotation.x * MRESDK.DegreesToRadians,
-        //                 hatRecord.rotation.y * MRESDK.DegreesToRadians,
-        //                 hatRecord.rotation.z * MRESDK.DegreesToRadians),
-        //             scale: hatRecord.scale,
-        //         },
-        //         attachment: {
-        //             attachPoint: 'head',
-        //             userId
-        //         }
-        //     }
-        // }).value;
+        });
     }
 }
