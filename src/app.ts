@@ -34,6 +34,9 @@ type HatDescriptor = {
  * WearAHat Application - Showcasing avatar attachments.
  */
 export default class WearAHat {
+    // Container for primitives
+    private assets: MRESDK.AssetContainer;
+
     // Container for instantiated hats.
     private attachedHats: { [key: string]: MRESDK.Actor } = {};
 
@@ -47,6 +50,8 @@ export default class WearAHat {
      * @param baseUrl The baseUrl to this project's `./public` folder.
      */
     constructor(private context: MRESDK.Context, private params: MRESDK.ParameterSet, private baseUrl: string) {
+        this.assets = new MRESDK.AssetContainer(context);
+
         // Hook the context events we're interested in.
         this.context.onStarted(() => {
 
@@ -164,8 +169,8 @@ export default class WearAHat {
                 }
             });
 
-            // Creaet an invisible cube with a collider
-            button = MRESDK.Actor.CreatePrimitive(this.context, {
+            // Create an invisible cube with a collider
+            button = MRESDK.Actor.CreatePrimitive(this.assets, {
                 definition: {
                     shape: MRESDK.PrimitiveShape.Box,
                     dimensions: { x: 0.4, y: 0.4, z: 0.4 } // make sure there's a gap
