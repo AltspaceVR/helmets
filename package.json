@@ -28,7 +28,8 @@
     "start": "node .",
     "start-watch": "nodemon --nolazy --inspect .",
     "debug": "node --nolazy --inspect=9229 .",
-    "debug-watch": "npm run build-only && concurrently \"npm run build-watch\" \"nodemon --nolazy --inspect=9229 .\""
+    "debug-watch": "npm run build-only && concurrently \"npm run build-watch\" \"nodemon --nolazy --inspect=9229 .\"",
+    "postinstall": "npm run build"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^2.17.0",
