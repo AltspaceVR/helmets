@@ -6,3 +6,4 @@
   * Open World Editor > Altspace > Basics > SDK App
   * `ws://<your subdomain>.herokuapp.com` (port 80)
   * Click Confirm
+
