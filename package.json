@@ -34,8 +34,7 @@
     "@typescript-eslint/eslint-plugin": "^2.17.0",
     "@typescript-eslint/parser": "^2.17.0",
     "eslint": "^6.8.0",
-    "nodemon": "^2.0.2",
-    "typescript": "^3.7.5"
+    "nodemon": "^2.0.2"
   },
   "dependencies": {
     "@microsoft/mixed-reality-extension-sdk": "^0.20.0",
@@ -43,6 +42,7 @@
     "@types/node": "^10.3.1",
     "concurrently": "^5.1.0",
     "dotenv": "^6.2.0",
-    "node-fetch": "^2.6.0"
+    "node-fetch": "^2.6.0",
+    "typescript": "^3.7.5"
   }
 }
