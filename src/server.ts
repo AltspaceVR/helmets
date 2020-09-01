@@ -29,7 +29,7 @@ function runApp() {
   });
 
   // Handle new application sessions
-  server.adapter.onConnection(context => new App(context, server.baseUrl));
+  server.adapter.onConnection((context, params) => new App(context, params, server.baseUrl));
 }
 
 // Check whether code is running in a debuggable watched filesystem

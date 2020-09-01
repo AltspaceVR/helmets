@@ -1207,7 +1207,7 @@
         "affectsGlobalScope": false
       },
       "./src/server.ts": {
-        "version": "e46dc1fc210d74431d75396276cbf7cc282e99260b5ab143da168a823bfc34af",
+        "version": "479a07d8e87e851649eecbc699dfba58bd674243bbda936cf0ecf8523003e591",
         "signature": "83229f38ed780fbf9431796a6d83e6997f9e9cdb9fe3b897f82a0bc9e0dc2d0d",
         "affectsGlobalScope": false
       },
