@@ -3,7 +3,7 @@
  * Licensed under the MIT License.
  */
 
-import * as MRESDK from '@microsoft/mixed-reality-extension-sdk';
+import * as MRE from '@microsoft/mixed-reality-extension-sdk';
 
 const fetch = require('node-fetch');
 
@@ -35,10 +35,10 @@ type HatDescriptor = {
  */
 export default class WearAHat {
     // Container for primitives
-    private assets: MRESDK.AssetContainer;
+    private assets: MRE.AssetContainer;
 
     // Container for instantiated hats.
-    private attachedHats: { [key: string]: MRESDK.Actor } = {};
+    private attachedHats = new Map<MRE.Guid, MRE.Actor>();
 
     // Load the database of hats.
     // tslint:disable-next-line:no-var-requires variable-name
@@ -49,8 +49,8 @@ export default class WearAHat {
      * @param context The MRE SDK context.
      * @param baseUrl The baseUrl to this project's `./public` folder.
      */
-    constructor(private context: MRESDK.Context, private params: MRESDK.ParameterSet, private baseUrl: string) {
-        this.assets = new MRESDK.AssetContainer(context);
+    constructor(private context: MRE.Context, private params: MRE.ParameterSet, private baseUrl: string) {
+        this.assets = new MRE.AssetContainer(context);
 
         // Hook the context events we're interested in.
         this.context.onStarted(() => {
@@ -125,11 +125,11 @@ export default class WearAHat {
      * Called when a user leaves the application (probably left the Altspace world where this app is running).
      * @param user The user that left the building.
      */
-    private userLeft(user: MRESDK.User) {
+    private userLeft(user: MRE.User) {
         // If the user was wearing a hat, destroy it. Otherwise it would be
         // orphaned in the world.
-        if (this.attachedHats[user.id]) this.attachedHats[user.id].destroy();
-        delete this.attachedHats[user.id];
+        if (this.attachedHats.has(user.id)) { this.attachedHats.get(user.id).destroy(); }
+        this.attachedHats.delete(user.id);
     }
 
     /**
@@ -137,7 +137,7 @@ export default class WearAHat {
      */
     private showHatMenu() {
         // Create a parent object for all the menu items.
-        const menu = MRESDK.Actor.CreateEmpty(this.context);
+        const menu = MRE.Actor.CreateEmpty(this.context);
         let x = 0;
 
         // Loop over the hat database, creating a menu item for each entry.
@@ -153,16 +153,16 @@ export default class WearAHat {
             const scale = (regex.test(hatId) && hatRecord.scale) ? hatRecord.scale : { x: 3, y: 3, z: 3 }
 
             // Create a Artifact without a collider
-            MRESDK.Actor.CreateFromLibrary(this.context, {
+            MRE.Actor.CreateFromLibrary(this.context, {
                 resourceId: hatRecord.resourceId,
                 actor: {
                     transform: {
                         local: {
                             position: { x, y: 1, z: 0 },
-                            rotation: MRESDK.Quaternion.FromEulerAngles(
-                                rotation.x * MRESDK.DegreesToRadians,
-                                rotation.y * MRESDK.DegreesToRadians,
-                                rotation.z * MRESDK.DegreesToRadians),
+                            rotation: MRE.Quaternion.FromEulerAngles(
+                                rotation.x * MRE.DegreesToRadians,
+                                rotation.y * MRE.DegreesToRadians,
+                                rotation.z * MRE.DegreesToRadians),
                             scale: scale
                         }
                     }
@@ -170,9 +170,9 @@ export default class WearAHat {
             });
 
             // Create an invisible cube with a collider
-            button = MRESDK.Actor.CreatePrimitive(this.assets, {
+            button = MRE.Actor.CreatePrimitive(this.assets, {
                 definition: {
-                    shape: MRESDK.PrimitiveShape.Box,
+                    shape: MRE.PrimitiveShape.Box,
                     dimensions: { x: 0.4, y: 0.4, z: 0.4 } // make sure there's a gap
                 },
                 addCollider: true,
@@ -192,7 +192,7 @@ export default class WearAHat {
             });
 
             // Set a click handler on the button.
-            button.setBehavior(MRESDK.ButtonBehavior).onClick(user => this.wearHat(hatId, user.id));
+            button.setBehavior(MRE.ButtonBehavior).onClick(user => this.wearHat(hatId, user.id));
 
             x += 1.5;
         }
@@ -203,54 +203,54 @@ export default class WearAHat {
      * @param hatId The id of the hat in the hat database.
      * @param userId The id of the user we will attach the hat to.
      */
-    private wearHat(hatId: string, userId: string) {
+    private wearHat(hatId: string, userId: MRE.Guid) {
         // If the user selected 'clear', then early out.
         if (hatId == "clear!") {
             // If the user is wearing a hat, destroy it.
-            if (this.attachedHats[userId]) this.attachedHats[userId].destroy();
-            delete this.attachedHats[userId];
+            if (this.attachedHats.has(userId)) this.attachedHats.get(userId).destroy();
+            this.attachedHats.delete(userId);
             return;
         }
         else if (hatId == "moveup!") {
-            if (this.attachedHats[userId])
-                this.attachedHats[userId].transform.local.position.y += 0.01;
+            if (this.attachedHats.has(userId))
+                this.attachedHats.get(userId).transform.local.position.y += 0.01;
             return;
         }
         else if (hatId == "movedown!") {
-            if (this.attachedHats[userId])
-                this.attachedHats[userId].transform.local.position.y -= 0.01;
+            if (this.attachedHats.has(userId))
+                this.attachedHats.get(userId).transform.local.position.y -= 0.01;
             return;
         }
         else if (hatId == "moveforward!") {
-            if (this.attachedHats[userId])
-                this.attachedHats[userId].transform.local.position.z += 0.01;
+            if (this.attachedHats.has(userId))
+                this.attachedHats.get(userId).transform.local.position.z += 0.01;
             return;
         }
         else if (hatId == "moveback!") {
-            if (this.attachedHats[userId])
-                this.attachedHats[userId].transform.local.position.z -= 0.01;
+            if (this.attachedHats.has(userId))
+                this.attachedHats.get(userId).transform.local.position.z -= 0.01;
             return;
         }
         else if (hatId == "sizeup!") {
-            if (this.attachedHats[userId]){
-                this.attachedHats[userId].transform.local.scale.x += 0.02;
-                this.attachedHats[userId].transform.local.scale.y += 0.02;
-                this.attachedHats[userId].transform.local.scale.z += 0.02;
+            if (this.attachedHats.has(userId)){
+                this.attachedHats.get(userId).transform.local.scale.x += 0.02;
+                this.attachedHats.get(userId).transform.local.scale.y += 0.02;
+                this.attachedHats.get(userId).transform.local.scale.z += 0.02;
             }
             return;
         }
         else if (hatId == "sizedown!") {
-            if (this.attachedHats[userId]){
-                this.attachedHats[userId].transform.local.scale.x -= 0.02;
-                this.attachedHats[userId].transform.local.scale.y -= 0.02;
-                this.attachedHats[userId].transform.local.scale.z -= 0.02;
+            if (this.attachedHats.has(userId)){
+                this.attachedHats.get(userId).transform.local.scale.x -= 0.02;
+                this.attachedHats.get(userId).transform.local.scale.y -= 0.02;
+                this.attachedHats.get(userId).transform.local.scale.z -= 0.02;
             }
             return;
         }
 
         // If the user is wearing a hat, destroy it.
-        if (this.attachedHats[userId]) this.attachedHats[userId].destroy();
-        delete this.attachedHats[userId];
+        if (this.attachedHats.has(userId)) this.attachedHats.get(userId).destroy();
+        this.attachedHats.delete(userId);
 
         const hatRecord = this.HatDatabase[hatId];
 
@@ -260,18 +260,18 @@ export default class WearAHat {
         const position = hatRecord.position ? hatRecord.position : { x: 0, y: 0, z: 0 }
         const scale = hatRecord.scale ? hatRecord.scale : { x: 1.5, y: 1.5, z: 1.5 }
         const rotation = hatRecord.rotation ? hatRecord.rotation : { x: 0, y: 180, z: 0 }
-        const attachPoint = <MRESDK.AttachPoint> (hatRecord.attachPoint ? hatRecord.attachPoint : 'head')
+        const attachPoint = <MRE.AttachPoint> (hatRecord.attachPoint ? hatRecord.attachPoint : 'head')
 
-        this.attachedHats[userId] = MRESDK.Actor.CreateFromLibrary(this.context, {
+        this.attachedHats.set(userId, MRE.Actor.CreateFromLibrary(this.context, {
             resourceId: hatRecord.resourceId,
             actor: {
                 transform: {
                     local: {
                         position: position,
-                        rotation: MRESDK.Quaternion.FromEulerAngles(
-                            rotation.x * MRESDK.DegreesToRadians,
-                            rotation.y * MRESDK.DegreesToRadians,
-                            rotation.z * MRESDK.DegreesToRadians),
+                        rotation: MRE.Quaternion.FromEulerAngles(
+                            rotation.x * MRE.DegreesToRadians,
+                            rotation.y * MRE.DegreesToRadians,
+                            rotation.z * MRE.DegreesToRadians),
                         scale: scale
                     }
                 },
@@ -280,6 +280,6 @@ export default class WearAHat {
                     userId
                 }
             }
-        });
+        }));
     }
 }
