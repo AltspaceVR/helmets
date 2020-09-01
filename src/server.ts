@@ -25,7 +25,7 @@ function runApp() {
   const server = new WebHost({
     // baseUrl: 'http://<ngrok-id>.ngrok.io',
     baseDir: resolvePath(__dirname, '../public'),
-    optionalPermissions: [Permissions.UserInteraction]
+    permissions: [Permissions.UserInteraction, Permissions.UserTracking]
   });
 
   // Handle new application sessions
