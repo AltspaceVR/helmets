@@ -31,3 +31,26 @@ Alternatively, you can use the Content Pack feature by creating one on altvr.com
 > ws://helmets.mres.altvr.com??content_pack=1187493048011980938
 
 This allows you to customize your own set of helmets from one or more Altspace World-Building kits and add your own customizations like scaling, positioning, and attach points. 
+
+Customizing scale, position, and attachPoint:
+
+```json
+{
+    "spacehelmetship": {
+        "resourceId": "artifact:1166530075533771277",
+        "scale": {
+            "x": 7.5,
+            "y": 7.5,
+            "z": 7.5
+        },
+        "position": {
+            "x": 0,
+            "y": -0.48,
+            "z": 0
+        },
+        "attachPoint": "spine-middle"
+    }
+}
+```
+
+Sometimes you need to adjust the scale or position of a helmet if it's a weird shape. You can find a full list of attach points here: https://microsoft.github.io/mixed-reality-extension-sdk/index.html#attachpoint
