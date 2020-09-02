@@ -67,3 +67,6 @@ built/
 app.zip
 
 .openode
+
+# auto generated ts build info
+*.tsbuildinfo

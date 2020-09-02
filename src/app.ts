@@ -137,7 +137,7 @@ export default class WearAHat {
      */
     private showHatMenu() {
         // Create a parent object for all the menu items.
-        const menu = MRE.Actor.CreateEmpty(this.context);
+        const menu = MRE.Actor.Create(this.context);
         let x = 0;
 
         // Loop over the hat database, creating a menu item for each entry.
