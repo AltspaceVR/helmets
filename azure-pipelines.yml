@@ -11,7 +11,7 @@ resources:
 variables:
   # Container registry service connection established during pipeline creation
   dockerRegistryServiceConnection: '4e58cb86-5184-40de-b14b-ac7156de5891'
-  imageRepository: 'mre-helmets'
+  imageRepository: 'helmets-mre'
   containerRegistry: 'mreregistry.azurecr.io'
   dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
   tag: '$(Build.SourceVersion)'
