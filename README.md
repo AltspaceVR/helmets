@@ -92,6 +92,7 @@ You can also adjust the spacing between each preview object. The default is 1.5 
 }
 
 The order doesn't matter for where you put the "options" entry.
+```
 
 # Development
 * Fork this repo
