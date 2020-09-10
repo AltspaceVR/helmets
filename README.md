@@ -4,6 +4,8 @@
 
 Helmets is an MRE app that allows Altspace users to "wear" objects. It began as a way to play dress-up by wearing space helmets but it's been used for wings, hula hoops, and even legs with roller skates. Having a birthday party? Put together a quick set of party hats for your guests.
 
+There's a demo Altspace world here: https://account.altvr.com/worlds/1046572460192825569/spaces/1183034043432698356
+
 # Usage
 ## Built-in Content
 You can configure the app to load different sets of data to load by specifying the "kit" parameter. For example:
