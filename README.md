@@ -1,3 +1,11 @@
+# Overview
+
+![Image of Helmets Demo World](https://altvr-distro.azureedge.net/uploads/space/image/1183034043432698356/background_banner_Screenshot__52_.jpg)
+
+Helmets is an MRE app that allows Altspace users to "wear" objects. It began as a way to play dress-up by wearing space helmets but it's been used for wings, hula hoops, and even legs with roller skates. Having a birthday party? Put together a quick set of party hats for your guests.
+
+
+
 # Usage
 ## Built-in Content
 You can configure the app to load different sets of data to load by specifying the "kit" parameter. For example:
@@ -15,6 +23,16 @@ Here are the built-in sets of helmets:
   * "viking_helmets"
 
 If you don't pass a "kit" parameter, it will load all of the built-in ones together.
+
+## Controls
+
+These are the controls that appear at the end of the list. You attach something by clicking on the preview object. The preview object has an invisible cube.
+
+* (click on an item) - attach
+* X Button - unattach
+* +/- Buttons - scale up/down
+* Up/Down Arrows - move up/down
+* Forward/Back Arrows - move forward/back
 
 ## Content Packs
 Alternatively, you can use the Content Pack feature by creating one on altvr.com and passing a "content_pack" parameter:
