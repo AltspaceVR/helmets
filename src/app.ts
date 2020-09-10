@@ -28,6 +28,7 @@ type HatDescriptor = {
         y: number;
         z: number;
     };
+    previewMargin: number;
 };
 
 /**
@@ -43,6 +44,9 @@ export default class WearAHat {
     // Load the database of hats.
     // tslint:disable-next-line:no-var-requires variable-name
     private HatDatabase: { [key: string]: HatDescriptor } = {};
+
+    // Options
+    private previewMargin = 1.5; // spacing between preview objects
 
     /**
      * Constructs a new instance of this class.
@@ -140,8 +144,20 @@ export default class WearAHat {
         const menu = MRE.Actor.CreateEmpty(this.context);
         let x = 0;
 
+        // check for options first since order isn't guaranteed in a dict
+        for (const k of Object.keys(this.HatDatabase)) {
+            if (k == "options"){
+                const options = this.HatDatabase[k]
+                if (options.previewMargin){
+                    this.previewMargin = options.previewMargin;
+                }
+            }
+        }
+
         // Loop over the hat database, creating a menu item for each entry.
         for (const hatId of Object.keys(this.HatDatabase)) {
+            if (hatId == "options") continue; // skip the special 'options' key
+
             const hatRecord = this.HatDatabase[hatId];
 
             // Create a clickable button.
@@ -194,7 +210,7 @@ export default class WearAHat {
             // Set a click handler on the button.
             button.setBehavior(MRE.ButtonBehavior).onClick(user => this.wearHat(hatId, user.id));
 
-            x += 1.5;
+            x += this.previewMargin;
         }
     }
 
