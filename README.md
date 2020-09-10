@@ -56,7 +56,7 @@ This allows you to customize your own set of helmets from one or more Altspace W
 See more examples in the public/data folder.
 
 ### Options
-You can optionally set options like "scale" and "position".
+You can optionally set options like "scale" and "position" and "attachPoint" (where the object attaches to your avatar skeleton).
 
 ```json
 {
@@ -78,6 +78,20 @@ You can optionally set options like "scale" and "position".
 ```
 
 Sometimes you need to adjust the scale or position of a helmet if it's a weird shape. You can find a full list of attach points here: https://microsoft.github.io/mixed-reality-extension-sdk/index.html#attachpoint
+
+You can also adjust the spacing between each preview object. The default is 1.5 meters:
+
+```json
+{
+    "spacehelmetship": {
+        "resourceId": "artifact:1166530075533771277"
+    },
+    "options": {
+        "previewMargin": 10
+    }
+}
+
+The order doesn't matter for where you put the "options" entry.
 
 # Development
 * Fork this repo
