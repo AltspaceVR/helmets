@@ -67,3 +67,5 @@ built/
 app.zip
 
 .openode
+
+tsconfig.tsbuildinfo
