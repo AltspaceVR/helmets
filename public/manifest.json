@@ -1,0 +1,5 @@
+{
+    "name": "Helmets",
+    "author": "Microsoft",
+    "optionalPermissions": ["user-interaction"]
+}
