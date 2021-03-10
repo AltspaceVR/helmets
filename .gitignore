@@ -68,4 +68,5 @@ app.zip
 
 .openode
 
-tsconfig.tsbuildinfo
+# auto generated ts build info
+*.tsbuildinfo

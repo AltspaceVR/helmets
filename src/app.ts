@@ -141,7 +141,7 @@ export default class WearAHat {
      */
     private showHatMenu() {
         // Create a parent object for all the menu items.
-        const menu = MRE.Actor.CreateEmpty(this.context);
+        const menu = MRE.Actor.Create(this.context);
         let x = 0;
 
         // check for options first since order isn't guaranteed in a dict
@@ -208,7 +208,7 @@ export default class WearAHat {
             });
 
             // Set a click handler on the button.
-            button.setBehavior(MRE.ButtonBehavior).onClick(user => this.wearHat(hatId, user.id));
+            button.setBehavior(MRE.ButtonBehavior).onButton('pressed', user => this.wearHat(hatId, user.id));
 
             x += this.previewMargin;
         }

@@ -10,7 +10,7 @@ There's a demo Altspace world here: https://account.altvr.com/worlds/10465724601
 ## Built-in Content
 You can configure the app to load different sets of data to load by specifying the "kit" parameter. For example:
 
-> ws://mres.altvr.com/helmets?kit=city_helmets
+> wss://mres.altvr.com/helmets?kit=city_helmets
 
 Here are the built-in sets of helmets:
 
@@ -37,7 +37,7 @@ These are the controls that appear at the end of the list. Users attach an objec
 ## Content Packs
 Alternatively, you can use the Content Pack feature by creating one on altvr.com and passing a "content_pack" parameter:
 
-> ws://mres.altvr.com/helmets?content_pack=1187493048011980938
+> wss://mres.altvr.com/helmets?content_pack=1187493048011980938
 
 This allows you to customize your own set of helmets from one or more Altspace World-Building Kits. The JSON field should contain a top-level key for each helmet with a "resourceId", usually an Artifact ID. That is the only required field. You can find these by browsing through your Kit's artifacts. Example:mµ
 
