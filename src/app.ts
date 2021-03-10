@@ -208,6 +208,7 @@ export default class WearAHat {
             });
 
             // Set a click handler on the button.
+            // NOTE: button press event fails on MAC
             button.setBehavior(MRE.ButtonBehavior).onClick(user => this.wearHat(hatId, user.id));
             //button.setBehavior(MRE.ButtonBehavior).onButton('pressed', user => this.wearHat(hatId, user.id));
 
