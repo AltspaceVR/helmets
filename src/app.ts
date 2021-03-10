@@ -208,7 +208,8 @@ export default class WearAHat {
             });
 
             // Set a click handler on the button.
-            button.setBehavior(MRE.ButtonBehavior).onButton('pressed', user => this.wearHat(hatId, user.id));
+            button.setBehavior(MRE.ButtonBehavior).onClick(user => this.wearHat(hatId, user.id));
+            //button.setBehavior(MRE.ButtonBehavior).onButton('pressed', user => this.wearHat(hatId, user.id));
 
             x += this.previewMargin;
         }
