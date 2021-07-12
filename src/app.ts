@@ -7,6 +7,8 @@ import * as MRE from '@microsoft/mixed-reality-extension-sdk';
 
 const fetch = require('node-fetch');
 
+const DEBUG = false;
+
 /**
  * The structure of a hat entry in the hat database.
  */
@@ -24,6 +26,21 @@ type HatDescriptor = {
         z: number;
     };
     position: {
+        x: number;
+        y: number;
+        z: number;
+    };
+    menuScale: {
+        x: number;
+        y: number;
+        z: number;
+    };
+    menuRotation: {
+        x: number;
+        y: number;
+        z: number;
+    };
+    menuPosition: {
         x: number;
         y: number;
         z: number;
@@ -67,6 +84,7 @@ export default class WearAHat {
                 fetch('https://account.altvr.com/api/content_packs/' + this.params.content_pack + '/raw.json')
                     .then((res: any) => res.json())
                     .then((json: any) => {
+                        if(DEBUG){ console.log(json); }
                         this.HatDatabase = Object.assign({}, json, require('../public/defaults.json'));;
                         this.started();
                     })
@@ -121,6 +139,7 @@ export default class WearAHat {
      * Called when a Hats application session starts up.
      */
     private async started() {
+        if(DEBUG){ console.log(this.HatDatabase); }
         // Show the hat menu.
         this.showHatMenu();
     }
@@ -163,10 +182,10 @@ export default class WearAHat {
             // Create a clickable button.
             var button;
 
-            // special scaling and rotation for commands
-            let regex: RegExp = /!$/; // e.g. clear!
-            const rotation = (regex.test(hatId) && hatRecord.rotation) ? hatRecord.rotation : { x: 0, y: 0, z: 0 }
-            const scale = (regex.test(hatId) && hatRecord.scale) ? hatRecord.scale : { x: 3, y: 3, z: 3 }
+            // special scaling and rotation for menu
+            const rotation = hatRecord.menuRotation ? hatRecord.menuRotation : { x: 0, y: 0, z: 0 }
+            const scale = hatRecord.menuScale ? hatRecord.menuScale : { x: 3, y: 3, z: 3 }
+            const position = hatRecord.menuPosition ? hatRecord.menuPosition : { x: 0, y: 1, z: 0 }
 
             // Create a Artifact without a collider
             MRE.Actor.CreateFromLibrary(this.context, {
@@ -174,7 +193,7 @@ export default class WearAHat {
                 actor: {
                     transform: {
                         local: {
-                            position: { x, y: 1, z: 0 },
+                            position: { x, y: position.y, z: position.z },
                             rotation: MRE.Quaternion.FromEulerAngles(
                                 rotation.x * MRE.DegreesToRadians,
                                 rotation.y * MRE.DegreesToRadians,
@@ -198,7 +217,7 @@ export default class WearAHat {
                     transform: {
                         local: {
                             position: { x, y: 1, z: 0 },
-                            scale: scale
+                            scale: { x: 3, y: 3, z: 3 } // not affected by custom scale
                         }
                     },
                     appearance: {
@@ -280,7 +299,7 @@ export default class WearAHat {
         const rotation = hatRecord.rotation ? hatRecord.rotation : { x: 0, y: 180, z: 0 }
         const attachPoint = <MRE.AttachPoint> (hatRecord.attachPoint ? hatRecord.attachPoint : 'head')
 
-        this.attachedHats.set(userId, MRE.Actor.CreateFromLibrary(this.context, {
+        const actor = MRE.Actor.CreateFromLibrary(this.context, {
             resourceId: hatRecord.resourceId,
             actor: {
                 transform: {
@@ -298,6 +317,8 @@ export default class WearAHat {
                     userId
                 }
             }
-        }));
+        });
+
+        this.attachedHats.set(userId, actor);
     }
 }

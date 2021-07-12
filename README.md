@@ -58,28 +58,46 @@ This allows you to customize your own set of helmets from one or more Altspace W
 See more examples in the public/data folder.
 
 ### Options
-You can optionally set options like "scale" and "position" and "attachPoint" (where the object attaches to your avatar skeleton).
+You can optionally set "position" / "rotation" / "scale" to adjust the helmet when it attaches. You can also set "menuPosition" / "menuRotation" / "menuScale" to adjust the helmet in the menu. Both rotations default to (0,180,0). Set "attachPoint" to change where the object attaches to your avatar skeleton (default is "head"). You can find a full list of attach points here: https://microsoft.github.io/mixed-reality-extension-sdk/index.html#attachpoint
 
 ```json
 {
     "spacehelmetship": {
         "resourceId": "artifact:1166530075533771277",
-        "scale": {
-            "x": 7.5,
-            "y": 7.5,
-            "z": 7.5
-        },
         "position": {
             "x": 0,
             "y": -0.48,
             "z": 0
         },
+        "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+        },
+        "scale": {
+            "x": 7.5,
+            "y": 7.5,
+            "z": 7.5
+        },
+        "menuPosition": {
+            "x": 0,
+            "y": -0.1,
+            "z": 0
+        },
+        "menuRotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+        },
+        "menuScale": {
+            "x": 1.5,
+            "y": 1.5,
+            "z": 1.5
+        },
         "attachPoint": "spine-middle"
     }
 }
 ```
-
-Sometimes you need to adjust the scale or position of a helmet if it's a weird shape. You can find a full list of attach points here: https://microsoft.github.io/mixed-reality-extension-sdk/index.html#attachpoint
 
 You can also adjust the spacing between each preview object. The default is 1.5 meters:
 
