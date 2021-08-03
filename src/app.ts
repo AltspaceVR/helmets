@@ -65,6 +65,8 @@ export default class WearAHat {
     // Options
     private previewMargin = 1.5; // spacing between preview objects
 
+    private controls = '../public/defaults.json';
+
     /**
      * Constructs a new instance of this class.
      * @param context The MRE SDK context.
@@ -75,6 +77,16 @@ export default class WearAHat {
 
         // Hook the context events we're interested in.
         this.context.onStarted(() => {
+            switch(this.params.controls) {
+                case "min":
+                    this.controls = '../public/min.json';
+                    break;
+                case "none":
+                    this.controls = '../public/none.json';
+                    break;
+                default:
+                    break;
+            }
 
             if(this.params.content_pack){
                 // Specify a url to a JSON file
@@ -85,7 +97,7 @@ export default class WearAHat {
                     .then((res: any) => res.json())
                     .then((json: any) => {
                         if(DEBUG){ console.log(json); }
-                        this.HatDatabase = Object.assign({}, json, require('../public/defaults.json'));;
+                        this.HatDatabase = Object.assign({}, json, require(this.controls));;
                         this.started();
                     })
            }
@@ -95,35 +107,35 @@ export default class WearAHat {
                 // e.g. ws://10.0.1.89:3901?kit=city_helmets
                 switch(this.params.kit) {
                     case "city_helmets": {
-                        this.HatDatabase = Object.assign({}, require('../public/data/1167643861778956427_city_helmets.json'), require('../public/defaults.json'));
+                        this.HatDatabase = Object.assign({}, require('../public/data/1167643861778956427_city_helmets.json'), require(this.controls));
                         break;
                     }
                     case "space_helmets": {
-                        this.HatDatabase = Object.assign({}, require('../public/data/1166467957212054271_space_helmets.json'), require('../public/defaults.json'));
+                        this.HatDatabase = Object.assign({}, require('../public/data/1166467957212054271_space_helmets.json'), require(this.controls));
                         break;
                     }
                     case "galaxy_flyin_3": {
-                        this.HatDatabase = Object.assign({}, require('../public/data/1166467957212054271_galaxy_flyin_3.json'), require('../public/defaults.json'));
+                        this.HatDatabase = Object.assign({}, require('../public/data/1166467957212054271_galaxy_flyin_3.json'), require(this.controls));
                         break;
                     }
                     case "star_wars_scout_helmet": {
-                        this.HatDatabase = Object.assign({}, require('../public/data/1172247038427922799_star_wars_scout_helmet.json'), require('../public/defaults.json'));
+                        this.HatDatabase = Object.assign({}, require('../public/data/1172247038427922799_star_wars_scout_helmet.json'), require(this.controls));
                         break;
                     }
                     case "samurai_helmets": {
-                        this.HatDatabase = Object.assign({}, require('../public/data/1172272863143527350_samurai_helmets.json'), require('../public/defaults.json'));
+                        this.HatDatabase = Object.assign({}, require('../public/data/1172272863143527350_samurai_helmets.json'), require(this.controls));
                         break;
                     }
                     case "town_helmets": {
-                        this.HatDatabase = Object.assign({}, require('../public/data/1172957249807582137_town_helmets.json'), require('../public/defaults.json'));
+                        this.HatDatabase = Object.assign({}, require('../public/data/1172957249807582137_town_helmets.json'), require(this.controls));
                         break;
                     }
                     case "viking_helmets": {
-                        this.HatDatabase = Object.assign({}, require('../public/data/1184323616783729170_viking_helmets.json'), require('../public/defaults.json'));
+                        this.HatDatabase = Object.assign({}, require('../public/data/1184323616783729170_viking_helmets.json'), require(this.controls));
                         break;
                     }
                     default: { // all - manually combined
-                        this.HatDatabase = Object.assign({}, require('../public/data/all.json'), require('../public/defaults.json'));
+                        this.HatDatabase = Object.assign({}, require('../public/data/all.json'), require(this.controls));
                         break;
                     }
                 }

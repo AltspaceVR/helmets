@@ -10,7 +10,9 @@ There's a demo Altspace world here: https://account.altvr.com/worlds/10465724601
 ## Built-in Content
 You can configure the app to load different sets of data to load by specifying the "kit" parameter. For example:
 
-> wss://mres.altvr.com/helmets?kit=city_helmets
+```
+wss://mres.altvr.com/helmets?kit=city_helmets
+```
 
 Here are the built-in sets of helmets:
 
@@ -33,6 +35,18 @@ These are the controls that appear at the end of the list. Users attach an objec
 * +/- Buttons - scale up/down
 * Up/Down Arrows - move up/down
 * Forward/Back Arrows - move forward/back
+
+By default, you will see all controls. Pass "controls=min" to hide all except the "unattach" button.
+
+```
+wss://mres.altvr.com/helmets?controls=min
+```
+
+Pass "controls=none" to hide all buttons (WARNING: users will not be able to unattach items).
+
+```
+wss://mres.altvr.com/helmets?controls=none
+```
 
 ## Content Packs
 Alternatively, you can use the Content Pack feature by creating one on altvr.com and passing a "content_pack" parameter:
