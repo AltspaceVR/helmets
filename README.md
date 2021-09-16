@@ -128,6 +128,9 @@ You can also adjust the spacing between each preview object. The default is 1.5 
 
 The order doesn't matter for where you put the "options" entry.
 
+# FAQ
+* **Why doesn't my attachPoint work?** Some attachpoints may not be supported by Altspace or just bugged. For example, finger ones like "right-pinky" and "right-middle" do not seem to be working right now. The workaround is to attach somewhere close like "right-hand" and move + rotate from there. 
+
 # Development
 * Fork this repo
 * Create a Heroku app and link it to your github repo
