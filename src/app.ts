@@ -5,6 +5,8 @@
 
 import * as MRE from '@microsoft/mixed-reality-extension-sdk';
 
+import * as SyncFix from './sync-fix';
+
 const fetch = require('node-fetch');
 
 const DEBUG = false;
@@ -64,6 +66,13 @@ export default class WearAHat {
 
     // Options
     private previewMargin = 1.5; // spacing between preview objects
+
+    /*
+     * Create a UserSyncFix object to work around Altspace MRE library late joiner bugs.
+     * Parameter is the number if millseconds to wait before attachments are synchronized.  All
+     * users that join within that timeframe with have their synchronizations "batched".
+     */
+    private syncFix: SyncFix.UserSyncFix = new SyncFix.UserSyncFix(5000);
 
     private controls = '../public/defaults.json';
 
@@ -145,6 +154,10 @@ export default class WearAHat {
 
         });
         this.context.onUserLeft(user => this.userLeft(user));
+
+        /* Add a userJoined function to let the syncFix object know a new user has joined. */
+        this.syncFix.autoSynchronizeAttachments(context);
+        this.context.onUserJoined(() => this.syncFix.userJoined());
     }
 
     /**
@@ -192,7 +205,7 @@ export default class WearAHat {
             const hatRecord = this.HatDatabase[hatId];
 
             // Create a clickable button.
-            var button;
+//            var button: MRE.Actor;
 
             // special scaling and rotation for menu
             const rotation = hatRecord.menuRotation ? hatRecord.menuRotation : { x: 0, y: 0, z: 0 }
@@ -217,7 +230,7 @@ export default class WearAHat {
             });
 
             // Create an invisible cube with a collider
-            button = MRE.Actor.CreatePrimitive(this.assets, {
+            const button = MRE.Actor.CreatePrimitive(this.assets, {
                 definition: {
                     shape: MRE.PrimitiveShape.Box,
                     dimensions: { x: 0.4, y: 0.4, z: 0.4 } // make sure there's a gap
@@ -241,6 +254,12 @@ export default class WearAHat {
             // Set a click handler on the button.
             // NOTE: button press event fails on MAC
             button.setBehavior(MRE.ButtonBehavior).onClick(user => this.wearHat(hatId, user.id));
+
+            this.syncFix.addSyncFunc(() => {
+                    button.setBehavior(MRE.ButtonBehavior).onClick(user => this.wearHat(hatId, user.id))
+            });
+
+
             //button.setBehavior(MRE.ButtonBehavior).onButton('pressed', user => this.wearHat(hatId, user.id));
 
             x += this.previewMargin;
